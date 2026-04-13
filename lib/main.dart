@@ -26,8 +26,15 @@ class _Palette {
   static const Color darkRule = Color(0xFF3A3936);
 }
 
-class PortfolioApp extends StatelessWidget {
+class PortfolioApp extends StatefulWidget {
   const PortfolioApp({super.key});
+
+  @override
+  State<PortfolioApp> createState() => _PortfolioAppState();
+}
+
+class _PortfolioAppState extends State<PortfolioApp> {
+  ThemeMode _themeMode = ThemeMode.system;
 
   static ThemeData _light() {
     return ThemeData(
@@ -223,21 +230,51 @@ class PortfolioApp extends StatelessWidget {
     );
   }
 
+  void _toggleTheme() {
+    setState(() {
+      if (_themeMode == ThemeMode.dark) {
+        _themeMode = ThemeMode.light;
+        return;
+      }
+      if (_themeMode == ThemeMode.light) {
+        _themeMode = ThemeMode.dark;
+        return;
+      }
+      final isSystemDark =
+          WidgetsBinding.instance.platformDispatcher.platformBrightness ==
+          Brightness.dark;
+      _themeMode = isSystemDark ? ThemeMode.light : ThemeMode.dark;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final isSystemDark =
+        WidgetsBinding.instance.platformDispatcher.platformBrightness ==
+        Brightness.dark;
+    final isDark = _themeMode == ThemeMode.dark ||
+        (_themeMode == ThemeMode.system && isSystemDark);
+
     return MaterialApp(
       title: '${PortfolioContent.name} · ${PortfolioContent.headline}',
       debugShowCheckedModeBanner: false,
       theme: _light(),
       darkTheme: _dark(),
-      themeMode: ThemeMode.system,
-      home: const PortfolioHome(),
+      themeMode: _themeMode,
+      home: PortfolioHome(isDarkMode: isDark, onToggleTheme: _toggleTheme),
     );
   }
 }
 
 class PortfolioHome extends StatefulWidget {
-  const PortfolioHome({super.key});
+  const PortfolioHome({
+    super.key,
+    required this.isDarkMode,
+    required this.onToggleTheme,
+  });
+
+  final bool isDarkMode;
+  final VoidCallback onToggleTheme;
 
   @override
   State<PortfolioHome> createState() => _PortfolioHomeState();
@@ -406,6 +443,17 @@ class _PortfolioHomeState extends State<PortfolioHome> {
                       PopupMenuItem(value: 'contact', child: Text('Contact')),
                     ],
                   ),
+                IconButton(
+                  tooltip: widget.isDarkMode
+                      ? 'Switch to light mode'
+                      : 'Switch to dark mode',
+                  onPressed: widget.onToggleTheme,
+                  icon: Icon(
+                    widget.isDarkMode
+                        ? Icons.light_mode_rounded
+                        : Icons.dark_mode_rounded,
+                  ),
+                ),
               ],
             ),
             SliverToBoxAdapter(
