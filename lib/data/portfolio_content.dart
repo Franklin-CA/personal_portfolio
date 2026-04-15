@@ -6,13 +6,14 @@ class PortfolioContent {
 
   static const String name = 'Franklin Anyaya';
   static const String headline = 'Flutter Developer';
+  static const String profileImageAsset = 'assets/profile_photo.jpg';
   static const String tagline =
-      'I build cross-platform apps with Flutter—polished UI, solid architecture, '
+      'I build cross-platform apps with Flutter\u2014polished UI, solid architecture, '
       'and reliable experiences on mobile and web.';
 
   static const String aboutTitle = 'About';
   static const String aboutBody =
-      'I’m Franklin Anyaya, a Flutter developer focused on shipping products end to end: '
+      "I'm Franklin Anyaya, a Flutter developer focused on shipping products end to end: "
       'layout and motion, state management, API integration, and deployment to web and stores. '
       'I care about maintainable code, accessible interfaces, and apps that feel fast and intentional.';
 
@@ -29,7 +30,7 @@ class PortfolioContent {
       description:
           'Participant in the Base PH Based Build IRL workshop hosted at Makerspace Innovhub. '
           'The in-person session was part of a global initiative to empower the next generation '
-          'of on-chain builders — recognizing dedication to learning, the builder community, '
+          'of on-chain builders -- recognizing dedication to learning, the builder community, '
           'and the wider on-chain economy.',
       imageAsset: 'assets/cert_base_build_irl.png',
     ),
@@ -48,7 +49,7 @@ class PortfolioContent {
     Project(
       title: 'Canopy',
       description:
-          'A 3D e-commerce and booking experience for the roofing industry—customers can explore '
+          'A 3D e-commerce and booking experience for the roofing industry--customers can explore '
           'offerings and book services in a modern storefront tailored to a roofing business.',
       tags: ['Flutter', '3D', 'E-commerce', 'Booking', 'Web'],
       liveUrl: 'https://canopy-system-dev.web.app/',
