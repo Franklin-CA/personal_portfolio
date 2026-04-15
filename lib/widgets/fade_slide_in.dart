@@ -96,11 +96,11 @@ class _FadeSlideInState extends State<FadeSlideIn>
 }
 
 // ──────────────────────────────────────────────────────────────────────────────
-// Visibility detector (uses scroll position to trigger animations)
+// Visibility detector (uses ancestor scroll position to trigger animations)
 // ──────────────────────────────────────────────────────────────────────────────
 
-/// Uses the scroll notification and position to detect when a widget
-/// becomes visible on screen.
+/// Detects when a widget becomes visible on screen by listening to the
+/// nearest ancestor [Scrollable]'s scroll position.
 class _VisibilityDetector extends StatefulWidget {
   const _VisibilityDetector({required this.onVisible, required this.child});
 
@@ -114,11 +114,38 @@ class _VisibilityDetector extends StatefulWidget {
 class _VisibilityDetectorState extends State<_VisibilityDetector> {
   final GlobalKey _key = GlobalKey();
   bool _didTrigger = false;
+  ScrollPosition? _scrollPosition;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _check());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _attachScroll();
+      _check();
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Re-attach if the scrollable ancestor changes
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _attachScroll();
+    });
+  }
+
+  void _attachScroll() {
+    final newPosition = Scrollable.maybeOf(context)?.position;
+    if (newPosition == _scrollPosition) return;
+    _scrollPosition?.removeListener(_check);
+    _scrollPosition = newPosition;
+    _scrollPosition?.addListener(_check);
+  }
+
+  @override
+  void dispose() {
+    _scrollPosition?.removeListener(_check);
+    super.dispose();
   }
 
   void _check() {
@@ -132,18 +159,13 @@ class _VisibilityDetectorState extends State<_VisibilityDetector> {
     // Trigger when the top of the widget is within 88% of screen height
     if (pos.dy < screenH * 0.88) {
       _didTrigger = true;
+      _scrollPosition?.removeListener(_check);
       widget.onVisible();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return NotificationListener<ScrollNotification>(
-      onNotification: (_) {
-        _check();
-        return false;
-      },
-      child: KeyedSubtree(key: _key, child: widget.child),
-    );
+    return KeyedSubtree(key: _key, child: widget.child);
   }
 }
