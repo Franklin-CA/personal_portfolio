@@ -8,9 +8,11 @@ import '../widgets/fade_slide_in.dart';
 import '../widgets/frosted_app_bar_bg.dart';
 import '../widgets/gradient_divider.dart';
 import '../widgets/hero_section.dart';
+import '../widgets/infinite_skill_marquee.dart';
 import '../widgets/nav_link.dart';
 import '../widgets/project_card.dart';
 import '../widgets/section_heading.dart';
+import '../widgets/skill_group_card.dart';
 
 // ──────────────────────────────────────────────────────────────────────────────
 // Home page
@@ -34,6 +36,7 @@ class _PortfolioHomeState extends State<PortfolioHome> {
   final ScrollController _scroll = ScrollController();
   final GlobalKey _aboutKey = GlobalKey();
   final GlobalKey _projectsKey = GlobalKey();
+  final GlobalKey _skillsKey = GlobalKey();
   final GlobalKey _certificationsKey = GlobalKey();
   final GlobalKey _contactKey = GlobalKey();
 
@@ -165,6 +168,13 @@ class _PortfolioHomeState extends State<PortfolioHome> {
                         ),
                       ),
                       Tooltip(
+                        message: 'Jump to Skills',
+                        child: NavLink(
+                          label: 'Skills',
+                          onTap: () => _scrollTo(_skillsKey),
+                        ),
+                      ),
+                      Tooltip(
                         message: 'Jump to Certifications',
                         child: NavLink(
                           label: 'Certifications',
@@ -185,6 +195,7 @@ class _PortfolioHomeState extends State<PortfolioHome> {
                         onSelected: (v) {
                           if (v == 'about') _scrollTo(_aboutKey);
                           if (v == 'projects') _scrollTo(_projectsKey);
+                          if (v == 'skills') _scrollTo(_skillsKey);
                           if (v == 'certifications') {
                             _scrollTo(_certificationsKey);
                           }
@@ -194,6 +205,7 @@ class _PortfolioHomeState extends State<PortfolioHome> {
                           PopupMenuItem(value: 'about', child: Text('About')),
                           PopupMenuItem(
                               value: 'projects', child: Text('Projects')),
+                          PopupMenuItem(value: 'skills', child: Text('Skills')),
                           PopupMenuItem(
                             value: 'certifications',
                             child: Text('Certifications'),
@@ -285,8 +297,43 @@ class _PortfolioHomeState extends State<PortfolioHome> {
                               ),
                             ),
 
-                            const SizedBox(height: 56),
+                            const SizedBox(height: 64),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
 
+                // ═════════════════════════════════════════════════
+                // CAROUSEL (Full Width, Modern Edge-to-Edge)
+                // ═════════════════════════════════════════════════
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    child: FadeSlideIn(
+                      direction: SlideDirection.up,
+                      delay: const Duration(milliseconds: 300),
+                      child: const InfiniteSkillsSection(),
+                    ),
+                  ),
+                ),
+
+                // ── Bottom Page Body ──
+                SliverToBoxAdapter(
+                  child: Center(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: maxW),
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(
+                          pad,
+                          40,
+                          pad,
+                          64 + bottomInset,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
                             // ═════════════════════════════════════════════════
                             // PROJECTS
                             // ═════════════════════════════════════════════════
@@ -315,6 +362,32 @@ class _PortfolioHomeState extends State<PortfolioHome> {
                                   titleStyle: t.titleMedium!,
                                   mutedStyle: t.bodyMedium!,
                                 ),
+                              );
+                            }),
+
+                            const SizedBox(height: 56),
+
+                            // ═════════════════════════════════════════════════
+                            // SKILLS
+                            // ═════════════════════════════════════════════════
+                            FadeSlideIn(
+                              direction: SlideDirection.left,
+                              delay: const Duration(milliseconds: 100),
+                              child: SectionHeading(
+                                key: _skillsKey,
+                                text: PortfolioContent.skillsTitle,
+                              ),
+                            ),
+                            const SizedBox(height: 32),
+                            ...PortfolioContent.skills
+                                .asMap()
+                                .entries
+                                .map((entry) {
+                              return FadeSlideIn(
+                                direction: SlideDirection.up,
+                                delay: Duration(
+                                    milliseconds: 100 + entry.key * 100),
+                                child: SkillGroupCard(skillGroup: entry.value),
                               );
                             }),
 

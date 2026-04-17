@@ -18,6 +18,27 @@ class PortfolioContent {
       'I care about maintainable code, accessible interfaces, and apps that feel fast and intentional.';
 
   static const String projectsTitle = 'Projects';
+  
+  static const String skillsTitle = 'Technical Skills';
+  static const List<SkillGroup> skills = [
+    SkillGroup(
+      category: 'Frameworks & Core',
+      skills: ['Flutter', 'Dart', 'Firebase', 'REST APIs'],
+    ),
+    SkillGroup(
+      category: 'Architecture & State',
+      skills: ['Provider', 'Riverpod', 'BLoC', 'Clean Architecture'],
+    ),
+    SkillGroup(
+      category: 'Tools & Platforms',
+      skills: ['Git', 'GitHub', 'Figma', 'Play Store / App Store', 'OpenStreetMap (OSM)'],
+    ),
+    SkillGroup(
+      category: 'AI & Orchestration',
+      skills: ['AI-Assisted Development', 'AI Integrations'],
+    ),
+  ];
+
   static const String certificationsTitle = 'Certifications';
   static const List<Certification> certifications = [
     Certification(
@@ -101,4 +122,14 @@ class Project {
   final List<String> tags;
   final String? repoUrl;
   final String? liveUrl;
+}
+
+class SkillGroup {
+  const SkillGroup({
+    required this.category,
+    required this.skills,
+  });
+
+  final String category;
+  final List<String> skills;
 }
