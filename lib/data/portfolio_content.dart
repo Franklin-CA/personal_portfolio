@@ -7,6 +7,7 @@ class PortfolioContent {
   static const String name = 'Franklin Anyaya';
   static const String headline = 'Flutter Developer';
   static const String profileImageAsset = 'assets/profile_photo.jpg';
+  static const String profileImageRedEyesAsset = 'assets/profile_photo_red_eyes.png';
   static const String tagline =
       'I build cross-platform apps with Flutter\u2014polished UI, solid architecture, '
       'and reliable experiences on mobile and web.';
