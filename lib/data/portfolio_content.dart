@@ -5,12 +5,13 @@ class PortfolioContent {
   PortfolioContent._();
 
   static const String name = 'Franklin Anyaya';
-  static const String headline = 'Flutter Developer';
+  static const String headline = 'Flutter & Firebase Developer';
   static const String profileImageAsset = 'assets/profile_photo.jpg';
   static const String profileImageRedEyesAsset = 'assets/profile_photo_red_eyes.png';
   static const String tagline =
-      'I build cross-platform apps with Flutter\u2014polished UI, solid architecture, '
-      'and reliable experiences on mobile and web.';
+      'I build modern, scalable cross-platform apps with Flutter and Firebase\u2014'
+      'from e-commerce platforms to booking systems with admin dashboards. '
+      'Let\'s turn your idea into a polished product.';
 
   static const String aboutTitle = 'About';
   static const String aboutBody =
@@ -18,8 +19,27 @@ class PortfolioContent {
       'layout and motion, state management, API integration, and deployment to web and stores. '
       'I care about maintainable code, accessible interfaces, and apps that feel fast and intentional.';
 
-  static const String projectsTitle = 'Projects';
+  static const String projectsTitle = 'Featured Projects';
   
+  static const String servicesTitle = 'Services';
+  static const List<Service> services = [
+    Service(
+      title: 'Flutter Development',
+      description: 'End-to-end Flutter app development for iOS, Android, and Web. Clean architecture, responsive UI, and smooth animations.',
+      icon: 'smartphone',
+    ),
+    Service(
+      title: 'Firebase Integration',
+      description: 'Complete Firebase backend setup including Authentication, Firestore, Cloud Functions, and Realtime Database.',
+      icon: 'cloud',
+    ),
+    Service(
+      title: 'Admin Dashboards',
+      description: 'Custom admin panels for managing your app data, analytics, and user base with intuitive interfaces.',
+      icon: 'dashboard',
+    ),
+  ];
+
   static const String skillsTitle = 'Technical Skills';
   static const List<SkillGroup> skills = [
     SkillGroup(
@@ -60,6 +80,17 @@ class PortfolioContent {
 
   static const List<Project> projects = [
     Project(
+      title: 'Canopy',
+      description:
+          'A 3D e-commerce and booking experience for the roofing industry. Customers can explore '
+          'offerings, customize services, and book appointments in a modern storefront. Features include '
+          'real-time availability, payment integration, and an admin dashboard for business management.',
+      tags: ['Flutter', 'Firebase', '3D', 'E-commerce', 'Booking', 'Admin Panel'],
+      liveUrl: 'https://canopy-system-dev.web.app/',
+      isFeatured: true,
+      hasDemo: true,
+    ),
+    Project(
       title: 'Pro Track',
       description:
           'Built for gym enthusiasts and anyone serious about fitness: track daily protein intake '
@@ -67,14 +98,6 @@ class PortfolioContent {
           'for guidance on training, diet, and general wellness concerns.',
       tags: ['Flutter', 'Fitness', 'AI coach', 'Nutrition', 'Web'],
       liveUrl: 'https://pro-track-a2679.web.app/',
-    ),
-    Project(
-      title: 'Canopy',
-      description:
-          'A 3D e-commerce and booking experience for the roofing industry--customers can explore '
-          'offerings and book services in a modern storefront tailored to a roofing business.',
-      tags: ['Flutter', '3D', 'E-commerce', 'Booking', 'Web'],
-      liveUrl: 'https://canopy-system-dev.web.app/',
     ),
   ];
 
@@ -116,6 +139,8 @@ class Project {
     this.tags = const [],
     this.repoUrl,
     this.liveUrl,
+    this.isFeatured = false,
+    this.hasDemo = false,
   });
 
   final String title;
@@ -123,6 +148,20 @@ class Project {
   final List<String> tags;
   final String? repoUrl;
   final String? liveUrl;
+  final bool isFeatured;
+  final bool hasDemo;
+}
+
+class Service {
+  const Service({
+    required this.title,
+    required this.description,
+    required this.icon,
+  });
+
+  final String title;
+  final String description;
+  final String icon;
 }
 
 class SkillGroup {

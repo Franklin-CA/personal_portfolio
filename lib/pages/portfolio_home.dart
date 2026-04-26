@@ -12,6 +12,7 @@ import '../widgets/infinite_skill_marquee.dart';
 import '../widgets/nav_link.dart';
 import '../widgets/project_card.dart';
 import '../widgets/section_heading.dart';
+import '../widgets/service_card.dart';
 import '../widgets/skill_group_card.dart';
 
 // ──────────────────────────────────────────────────────────────────────────────
@@ -35,6 +36,7 @@ class PortfolioHome extends StatefulWidget {
 class _PortfolioHomeState extends State<PortfolioHome> {
   final ScrollController _scroll = ScrollController();
   final GlobalKey _aboutKey = GlobalKey();
+  final GlobalKey _servicesKey = GlobalKey();
   final GlobalKey _projectsKey = GlobalKey();
   final GlobalKey _skillsKey = GlobalKey();
   final GlobalKey _certificationsKey = GlobalKey();
@@ -161,6 +163,13 @@ class _PortfolioHomeState extends State<PortfolioHome> {
                         ),
                       ),
                       Tooltip(
+                        message: 'Jump to Services',
+                        child: NavLink(
+                          label: 'Services',
+                          onTap: () => _scrollTo(_servicesKey),
+                        ),
+                      ),
+                      Tooltip(
                         message: 'Jump to Projects',
                         child: NavLink(
                           label: 'Projects',
@@ -194,6 +203,7 @@ class _PortfolioHomeState extends State<PortfolioHome> {
                         tooltip: 'Sections',
                         onSelected: (v) {
                           if (v == 'about') _scrollTo(_aboutKey);
+                          if (v == 'services') _scrollTo(_servicesKey);
                           if (v == 'projects') _scrollTo(_projectsKey);
                           if (v == 'skills') _scrollTo(_skillsKey);
                           if (v == 'certifications') {
@@ -203,6 +213,8 @@ class _PortfolioHomeState extends State<PortfolioHome> {
                         },
                         itemBuilder: (context) => const [
                           PopupMenuItem(value: 'about', child: Text('About')),
+                          PopupMenuItem(
+                              value: 'services', child: Text('Services')),
                           PopupMenuItem(
                               value: 'projects', child: Text('Projects')),
                           PopupMenuItem(value: 'skills', child: Text('Skills')),
@@ -263,6 +275,7 @@ class _PortfolioHomeState extends State<PortfolioHome> {
                                 textTheme: t,
                                 scheme: scheme,
                                 onSeeProjects: () => _scrollTo(_projectsKey),
+                                onHireMe: () => _scrollTo(_contactKey),
                               ),
                             ),
 
@@ -298,13 +311,64 @@ class _PortfolioHomeState extends State<PortfolioHome> {
                             ),
 
                             const SizedBox(height: 64),
+
+                            // ═════════════════════════════════════════════════
+                            // SERVICES
+                            // ═════════════════════════════════════════════════
+                            FadeSlideIn(
+                              direction: SlideDirection.left,
+                              delay: const Duration(milliseconds: 100),
+                              child: SectionHeading(
+                                key: _servicesKey,
+                                text: PortfolioContent.servicesTitle,
+                              ),
+                            ),
+                            const SizedBox(height: 24),
+                            FadeSlideIn(
+                              direction: SlideDirection.up,
+                              delay: const Duration(milliseconds: 200),
+                              child: wide
+                                  ? IntrinsicHeight(
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.stretch,
+                                        children: PortfolioContent.services
+                                            .asMap()
+                                            .entries
+                                            .map((entry) {
+                                          final isLast = entry.key ==
+                                              PortfolioContent.services.length -
+                                                  1;
+                                          return Expanded(
+                                            child: Padding(
+                                              padding: EdgeInsets.only(
+                                                  right: isLast ? 0 : 16),
+                                              child: ServiceCard(
+                                                service: entry.value,
+                                              ),
+                                            ),
+                                          );
+                                        }).toList(),
+                                      ),
+                                    )
+                                  : Column(
+                                      children: PortfolioContent.services
+                                          .map((s) => Padding(
+                                                padding: const EdgeInsets.only(
+                                                    bottom: 16),
+                                                child: ServiceCard(service: s),
+                                              ))
+                                          .toList(),
+                                    ),
+                            ),
+
+                            const SizedBox(height: 64),
                           ],
                         ),
                       ),
                     ),
                   ),
                 ),
-
                 // ═════════════════════════════════════════════════
                 // CAROUSEL (Full Width, Modern Edge-to-Edge)
                 // ═════════════════════════════════════════════════
@@ -422,6 +486,64 @@ class _PortfolioHomeState extends State<PortfolioHome> {
                             }),
 
                             const SizedBox(height: 56),
+
+                            // ═════════════════════════════════════════════════
+                            // CTA SECTION
+                            // ═════════════════════════════════════════════════
+                            FadeSlideIn(
+                              direction: SlideDirection.up,
+                              delay: const Duration(milliseconds: 100),
+                              child: Container(
+                                padding: const EdgeInsets.all(32),
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      scheme.primary.withValues(alpha: 0.1),
+                                      scheme.primary.withValues(alpha: 0.05),
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  ),
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(
+                                    color: scheme.primary.withValues(alpha: 0.2),
+                                  ),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Ready to bring your app idea to life?',
+                                      style: t.headlineSmall?.copyWith(
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 12),
+                                    Text(
+                                      'Let\'s work together to build something amazing with Flutter and Firebase.',
+                                      style: t.bodyLarge?.copyWith(
+                                        color: scheme.onSurface
+                                            .withValues(alpha: 0.8),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 24),
+                                    FilledButton.icon(
+                                      onPressed: () => _scrollTo(_contactKey),
+                                      icon: const Icon(
+                                          Icons.send_rounded, size: 18),
+                                      label: const Text('Hire me'),
+                                      style: FilledButton.styleFrom(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 32, vertical: 16),
+                                        minimumSize: const Size(44, 48),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+
+                            const SizedBox(height: 64),
 
                             // ═════════════════════════════════════════════════
                             // CONTACT

@@ -22,7 +22,6 @@ class _ProfilePhotoState extends State<ProfilePhoto>
   late final AnimationController _glowController;
   late final AnimationController _gsapController;
   late final Animation<double> _scaleAnimation;
-  late final Animation<double> _rotationAnimation;
 
   bool _isRedEyes = false;
   final AudioPlayer _audioPlayer = AudioPlayer();

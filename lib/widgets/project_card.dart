@@ -62,7 +62,35 @@ class _ProjectCardState extends State<ProjectCard> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(widget.project.title, style: widget.titleStyle),
+                Row(
+                  children: [
+                    Text(widget.project.title, style: widget.titleStyle),
+                    if (widget.project.isFeatured) ...[
+                      const SizedBox(width: 12),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: scheme.primary.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: scheme.primary.withValues(alpha: 0.3),
+                          ),
+                        ),
+                        child: Text(
+                          'Featured',
+                          style: widget.mutedStyle.copyWith(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                            color: scheme.primary,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
                 if (widget.project.tags.isNotEmpty) ...[
                   const SizedBox(height: 8),
                   Wrap(
@@ -71,7 +99,9 @@ class _ProjectCardState extends State<ProjectCard> {
                     children: widget.project.tags.map((tag) {
                       return Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 4),
+                          horizontal: 10,
+                          vertical: 4,
+                        ),
                         decoration: BoxDecoration(
                           color: scheme.primary.withValues(alpha: 0.08),
                           borderRadius: BorderRadius.circular(20),
@@ -92,8 +122,10 @@ class _ProjectCardState extends State<ProjectCard> {
                   ),
                 ],
                 const SizedBox(height: 14),
-                SelectableText(widget.project.description,
-                    style: widget.mutedStyle),
+                SelectableText(
+                  widget.project.description,
+                  style: widget.mutedStyle,
+                ),
                 const SizedBox(height: 18),
                 Wrap(
                   spacing: 12,
@@ -109,11 +141,14 @@ class _ProjectCardState extends State<ProjectCard> {
                           label: const Text('Live site'),
                           style: FilledButton.styleFrom(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 18, vertical: 12),
+                              horizontal: 18,
+                              vertical: 12,
+                            ),
                             minimumSize: const Size(44, 40),
                           ),
                         ),
                       ),
+
                     if (widget.project.repoUrl != null)
                       Tooltip(
                         message: 'View source code',
@@ -124,7 +159,9 @@ class _ProjectCardState extends State<ProjectCard> {
                           label: const Text('Source'),
                           style: OutlinedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 18, vertical: 12),
+                              horizontal: 18,
+                              vertical: 12,
+                            ),
                             minimumSize: const Size(44, 40),
                           ),
                         ),

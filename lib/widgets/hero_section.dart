@@ -15,12 +15,14 @@ class HeroSection extends StatelessWidget {
     required this.textTheme,
     required this.scheme,
     required this.onSeeProjects,
+    required this.onHireMe,
   });
 
   final bool wide;
   final TextTheme textTheme;
   final ColorScheme scheme;
   final VoidCallback onSeeProjects;
+  final VoidCallback onHireMe;
 
   @override
   Widget build(BuildContext context) {
@@ -44,13 +46,48 @@ class HeroSection extends StatelessWidget {
           style: textTheme.bodyLarge,
         ),
         const SizedBox(height: 28),
-        Tooltip(
-          message: 'Scroll to the projects list',
-          child: FilledButton(
-            onPressed: onSeeProjects,
-            child: const Text('See projects'),
-          ),
-        ),
+        wide
+            ? Row(
+                children: [
+                  Tooltip(
+                    message: 'Scroll to the projects list',
+                    child: FilledButton(
+                      onPressed: onSeeProjects,
+                      child: const Text('View projects'),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Tooltip(
+                    message: 'Get in touch',
+                    child: OutlinedButton.icon(
+                      onPressed: onHireMe,
+                      icon: const Icon(Icons.person_add_rounded, size: 18),
+                      label: const Text('Hire me'),
+                    ),
+                  ),
+                ],
+              )
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Tooltip(
+                    message: 'Scroll to the projects list',
+                    child: FilledButton(
+                      onPressed: onSeeProjects,
+                      child: const Text('View projects'),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Tooltip(
+                    message: 'Get in touch',
+                    child: OutlinedButton.icon(
+                      onPressed: onHireMe,
+                      icon: const Icon(Icons.person_add_rounded, size: 18),
+                      label: const Text('Hire me'),
+                    ),
+                  ),
+                ],
+              ),
       ],
     );
 
