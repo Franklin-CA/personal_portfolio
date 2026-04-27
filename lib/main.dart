@@ -29,7 +29,7 @@ class _PortfolioAppState extends State<PortfolioApp> {
       }
       final isSystemDark =
           WidgetsBinding.instance.platformDispatcher.platformBrightness ==
-              Brightness.dark;
+          Brightness.dark;
       _themeMode = isSystemDark ? ThemeMode.light : ThemeMode.dark;
     });
   }
@@ -38,8 +38,9 @@ class _PortfolioAppState extends State<PortfolioApp> {
   Widget build(BuildContext context) {
     final isSystemDark =
         WidgetsBinding.instance.platformDispatcher.platformBrightness ==
-            Brightness.dark;
-    final isDark = _themeMode == ThemeMode.dark ||
+        Brightness.dark;
+    final isDark =
+        _themeMode == ThemeMode.dark ||
         (_themeMode == ThemeMode.system && isSystemDark);
 
     return MaterialApp(

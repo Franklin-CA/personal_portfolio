@@ -5,7 +5,7 @@ class PortfolioContent {
   PortfolioContent._();
 
   static const String name = 'Franklin Anyaya';
-  static const String headline = 'Flutter & Firebase Developer';
+  static const String headline = 'Full-Stack Flutter Developer';
   static const String profileImageAsset = 'assets/profile_photo.jpg';
   static const String profileImageRedEyesAsset = 'assets/profile_photo_red_eyes.png';
   static const String tagline =
@@ -16,7 +16,7 @@ class PortfolioContent {
   static const String aboutTitle = 'About';
   static const String aboutBody =
       "I'm Franklin Anyaya, a Flutter developer focused on shipping products end to end: "
-      'layout and motion, state management, API integration, and deployment to web and stores. '
+      'layout and motion, state management, API integration, and deployment to web and stores. '  
       'I care about maintainable code, accessible interfaces, and apps that feel fast and intentional.';
 
   static const String projectsTitle = 'Featured Projects';
@@ -87,7 +87,6 @@ class PortfolioContent {
           'real-time availability, payment integration, and an admin dashboard for business management.',
       tags: ['Flutter', 'Firebase', '3D', 'E-commerce', 'Booking', 'Admin Panel'],
       liveUrl: 'https://canopy-system-dev.web.app/',
-      isFeatured: true,
       hasDemo: true,
     ),
     Project(
