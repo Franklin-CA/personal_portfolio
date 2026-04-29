@@ -37,9 +37,10 @@ class _ProjectCardState extends State<ProjectCard>
       duration: const Duration(milliseconds: 200),
       vsync: this,
     );
-    _scaleAnimation = Tween<double>(begin: 1.0, end: 1.02).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeOut),
-    );
+    _scaleAnimation = Tween<double>(
+      begin: 1.0,
+      end: 1.02,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
   }
 
   @override
@@ -184,15 +185,15 @@ class _ProjectCardState extends State<ProjectCard>
                             ),
                           ),
                         ),
-                      if (widget.project.repoUrl != null)
+                      if (widget.project.apkUrl != null)
                         Tooltip(
-                          message: 'View source code',
-                          child: OutlinedButton.icon(
+                          message: 'Download APK',
+                          child: FilledButton.icon(
                             onPressed: () =>
-                                widget.onOpen(widget.project.repoUrl!),
-                            icon: const Icon(Icons.code_rounded, size: 16),
-                            label: const Text('Source'),
-                            style: OutlinedButton.styleFrom(
+                                widget.onOpen(widget.project.apkUrl!),
+                            icon: const Icon(Icons.download_rounded, size: 16),
+                            label: const Text('Download APK'),
+                            style: FilledButton.styleFrom(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 20,
                                 vertical: 14,
