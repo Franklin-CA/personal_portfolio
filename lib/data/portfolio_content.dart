@@ -73,6 +73,26 @@ class PortfolioContent {
   static const String certificationsTitle = 'Certifications';
   static const List<Certification> certifications = [
     Certification(
+      credentialType: 'Certificate of Completion',
+      title: '486-Hour On-the-Job Training (OJT)',
+      issuer: 'Makerspace Innovhub OPC & Urdaneta City University',
+      issuedDateLabel: 'February 12 - May 16, 2026',
+      location: 'Makerspace Innovhub OPC, Brgy. Nilombot, Mapandan, Pangasinan',
+      description:
+          'Successfully completed 486 hours of on-the-job training under the Bachelor of Science in Information Technology program of Urdaneta City University. Gained hands-on experience in software development, Flutter, and real-world project implementation.',
+      imageAsset: 'assets/Franklin.png',
+    ),
+    Certification(
+      credentialType: 'National Certificate II (NC II)',
+      title: 'Computer Systems Servicing (CSS)',
+      issuer: 'Technical Education and Skills Development Authority (TESDA)',
+      issuedDateLabel: 'May 6, 2026',
+      location: 'iTech Computer Academy Inc., Malasiqui, Pangasinan',
+      description:
+          'Successfully passed the TESDA competency assessment for Computer Systems Servicing NC II, covering COC1, COC2, COC3, and COC4. Demonstrated proficiency in installing and configuring computer systems, setting up computer networks, and maintaining computer systems and networks.',
+      imageAsset: 'assets/CSS NC II.jpeg',
+    ),
+    Certification(
       credentialType: 'Certificate of Participation',
       title: 'Based Build IRL Workshop',
       issuer: 'Base Philippines (Base PH)',

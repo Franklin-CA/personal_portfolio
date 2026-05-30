@@ -61,6 +61,8 @@ flutter:
 
   assets:
     - assets/cert_base_build_irl.png
+    - assets/CSS NC II.jpeg
+    - assets/Franklin.png
     - assets/profile_photo.jpg
     - assets/profile_photo_red_eyes.png
     - assets/mangekyou_sharingan.mp3

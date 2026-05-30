@@ -120,7 +120,7 @@ class AppTheme {
       colorScheme: ColorScheme.dark(
         surface: Palette.darkSurface,
         onSurface: Palette.darkInk,
-        primary: const Color(0xFF8BAFD4),
+        primary: Palette.accent,
         onPrimary: Palette.darkBg,
         onSurfaceVariant: Palette.darkMuted,
         outline: Palette.darkRule,
