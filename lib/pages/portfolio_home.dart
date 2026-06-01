@@ -1,8 +1,11 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../data/portfolio_content.dart';
+import '../theme/palette.dart';
+import '../widgets/background_glow_blobs.dart';
 import '../widgets/certification_card.dart';
 import '../widgets/fade_slide_in.dart';
 import '../widgets/frosted_app_bar_bg.dart';
@@ -104,16 +107,22 @@ class _PortfolioHomeState extends State<PortfolioHome> {
   @override
   Widget build(BuildContext context) {
     final w = MediaQuery.sizeOf(context).width;
-    final wide = w >= 880;
-    const maxW = 760.0;
-    final pad = wide ? 48.0 : 22.0;
+    final wide = w >= 900;
+    final pad = wide ? 80.0 : 22.0;
     final bottomInset = MediaQuery.paddingOf(context).bottom;
     final scheme = Theme.of(context).colorScheme;
     final t = Theme.of(context).textTheme;
 
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
       body: Stack(
         children: [
+          // ── Ambient Background Glow Blobs ──
+          const Positioned.fill(
+            child: BackgroundGlowBlobs(),
+          ),
+
           // ── Scrollable Content ──
           Scrollbar(
             controller: _scroll,
@@ -251,19 +260,16 @@ class _PortfolioHomeState extends State<PortfolioHome> {
 
                 // ── Page Body ──
                 SliverToBoxAdapter(
-                  child: Center(
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: maxW),
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(
-                          pad,
-                          40,
-                          pad,
-                          64 + bottomInset,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(
+                      pad,
+                      40,
+                      pad,
+                      64 + bottomInset,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
                             // ═════════════════════════════════════════════════
                             // HERO -- Profile Photo + Intro
                             // ═════════════════════════════════════════════════
@@ -276,6 +282,7 @@ class _PortfolioHomeState extends State<PortfolioHome> {
                                 scheme: scheme,
                                 onSeeProjects: () => _scrollTo(_projectsKey),
                                 onHireMe: () => _scrollTo(_contactKey),
+                                onOpenUrl: _openUrl,
                               ),
                             ),
 
@@ -364,8 +371,6 @@ class _PortfolioHomeState extends State<PortfolioHome> {
 
                             const SizedBox(height: 64),
                           ],
-                        ),
-                      ),
                     ),
                   ),
                 ),
@@ -385,19 +390,16 @@ class _PortfolioHomeState extends State<PortfolioHome> {
 
                 // ── Bottom Page Body ──
                 SliverToBoxAdapter(
-                  child: Center(
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: maxW),
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(
-                          pad,
-                          40,
-                          pad,
-                          64 + bottomInset,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(
+                      pad,
+                      40,
+                      pad,
+                      64 + bottomInset,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
                             // ═════════════════════════════════════════════════
                             // PROJECTS
                             // ═════════════════════════════════════════════════
@@ -469,21 +471,58 @@ class _PortfolioHomeState extends State<PortfolioHome> {
                               ),
                             ),
                             const SizedBox(height: 24),
-                            ...PortfolioContent.certifications
-                                .asMap()
-                                .entries
-                                .map((entry) {
-                              return FadeSlideIn(
-                                direction: SlideDirection.up,
-                                delay: Duration(
-                                    milliseconds: 100 + entry.key * 120),
-                                child: CertificationCard(
-                                  certification: entry.value,
-                                  mutedStyle: t.bodyMedium!,
-                                  titleStyle: t.titleMedium!,
-                                ),
-                              );
-                            }),
+                            ...(() {
+                              final certs = PortfolioContent.certifications;
+                              if (wide) {
+                                // 2-column grid on wide screens
+                                final rows = <Widget>[];
+                                for (int i = 0; i < certs.length; i += 2) {
+                                  final left = certs[i];
+                                  final right = i + 1 < certs.length ? certs[i + 1] : null;
+                                  rows.add(
+                                    FadeSlideIn(
+                                      direction: SlideDirection.up,
+                                      delay: Duration(milliseconds: 100 + (i ~/ 2) * 120),
+                                      child: Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Expanded(
+                                            child: CertificationCard(
+                                              certification: left,
+                                              mutedStyle: t.bodyMedium!,
+                                              titleStyle: t.titleSmall!,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 16),
+                                          Expanded(
+                                            child: right != null
+                                                ? CertificationCard(
+                                                    certification: right,
+                                                    mutedStyle: t.bodyMedium!,
+                                                    titleStyle: t.titleSmall!,
+                                                  )
+                                                : const SizedBox.shrink(),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                }
+                                return rows;
+                              } else {
+                                return certs.asMap().entries.map((entry) {
+                                  return FadeSlideIn(
+                                    direction: SlideDirection.up,
+                                    delay: Duration(milliseconds: 100 + entry.key * 120),
+                                    child: CertificationCard(
+                                      certification: entry.value,
+                                      mutedStyle: t.bodyMedium!,
+                                      titleStyle: t.titleSmall!,
+                                    ),
+                                  );
+                                }).toList();
+                              }
+                            })(),
 
                             const SizedBox(height: 56),
 
@@ -493,52 +532,98 @@ class _PortfolioHomeState extends State<PortfolioHome> {
                             FadeSlideIn(
                               direction: SlideDirection.up,
                               delay: const Duration(milliseconds: 100),
-                              child: Container(
-                                padding: const EdgeInsets.all(32),
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      scheme.primary.withValues(alpha: 0.1),
-                                      scheme.primary.withValues(alpha: 0.05),
-                                    ],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: BackdropFilter(
+                                  filter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
+                                  child: Container(
+                                    padding: const EdgeInsets.all(32),
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          Palette.cyberPurple.withValues(alpha: 0.15),
+                                          Palette.cyberCyan.withValues(alpha: 0.03),
+                                          Palette.cyberPink.withValues(alpha: 0.15),
+                                        ],
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                      ),
+                                      borderRadius: BorderRadius.circular(20),
+                                      border: Border.all(
+                                        color: Palette.cyberPurple.withValues(alpha: 0.25),
+                                        width: 1,
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Palette.cyberPurple.withValues(alpha: 0.15),
+                                          blurRadius: 20,
+                                          offset: const Offset(-2, 2),
+                                        ),
+                                        BoxShadow(
+                                          color: Palette.cyberCyan.withValues(alpha: 0.15),
+                                          blurRadius: 20,
+                                          offset: const Offset(2, -2),
+                                        ),
+                                      ],
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Ready to bring your app idea to life?',
+                                          style: t.headlineSmall?.copyWith(
+                                            fontWeight: FontWeight.bold,
+                                            foreground: Paint()
+                                              ..shader = const LinearGradient(
+                                                colors: [Palette.cyberPurple, Palette.cyberCyan],
+                                              ).createShader(
+                                                const Rect.fromLTWH(0, 0, 300, 30),
+                                              ),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 12),
+                                        Text(
+                                          'Let\'s work together to build something amazing with Flutter and Firebase.',
+                                          style: t.bodyLarge?.copyWith(
+                                            color: isDark ? Colors.white70 : Colors.black87,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 24),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            gradient: const LinearGradient(
+                                              colors: [Palette.cyberPurple, Palette.cyberCyan],
+                                              begin: Alignment.topLeft,
+                                              end: Alignment.bottomRight,
+                                            ),
+                                            borderRadius: BorderRadius.circular(12),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Palette.cyberPurple.withValues(alpha: 0.3),
+                                                blurRadius: 8,
+                                                offset: const Offset(0, 4),
+                                              ),
+                                            ],
+                                          ),
+                                          child: FilledButton.icon(
+                                            onPressed: () => _scrollTo(_contactKey),
+                                            icon: const Icon(Icons.send_rounded, size: 18, color: Colors.white),
+                                            label: const Text(
+                                              'Hire me',
+                                              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                                            ),
+                                            style: FilledButton.styleFrom(
+                                              backgroundColor: Colors.transparent,
+                                              shadowColor: Colors.transparent,
+                                              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                                              minimumSize: const Size(44, 48),
+                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  borderRadius: BorderRadius.circular(20),
-                                  border: Border.all(
-                                    color: scheme.primary.withValues(alpha: 0.2),
-                                  ),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Ready to bring your app idea to life?',
-                                      style: t.headlineSmall?.copyWith(
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 12),
-                                    Text(
-                                      'Let\'s work together to build something amazing with Flutter and Firebase.',
-                                      style: t.bodyLarge?.copyWith(
-                                        color: scheme.onSurface
-                                            .withValues(alpha: 0.8),
-                                      ),
-                                    ),
-                                    const SizedBox(height: 24),
-                                    FilledButton.icon(
-                                      onPressed: () => _scrollTo(_contactKey),
-                                      icon: const Icon(
-                                          Icons.send_rounded, size: 18),
-                                      label: const Text('Hire me'),
-                                      style: FilledButton.styleFrom(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 32, vertical: 16),
-                                        minimumSize: const Size(44, 48),
-                                      ),
-                                    ),
-                                  ],
                                 ),
                               ),
                             ),
@@ -571,52 +656,168 @@ class _PortfolioHomeState extends State<PortfolioHome> {
                                   SelectableText(
                                     PortfolioContent.email,
                                     style: t.labelLarge?.copyWith(
-                                      color: scheme.primary,
+                                      color: isDark ? Palette.cyberCyan : Palette.cyberPurple,
+                                      fontWeight: FontWeight.bold,
                                       decoration: TextDecoration.underline,
-                                      decorationColor:
-                                          scheme.primary.withValues(alpha: 0.4),
+                                      decorationColor: (isDark ? Palette.cyberCyan : Palette.cyberPurple)
+                                          .withValues(alpha: 0.4),
                                     ),
                                   ),
                                   const SizedBox(height: 22),
                                   Wrap(
                                     spacing: 12,
                                     runSpacing: 12,
-                                    crossAxisAlignment:
-                                        WrapCrossAlignment.center,
+                                    crossAxisAlignment: WrapCrossAlignment.center,
                                     children: [
+                                      // ── Email ──
                                       Tooltip(
                                         message: 'Open your mail app',
-                                        child: FilledButton.icon(
-                                          onPressed: () => _openUrl(
-                                            'mailto:${PortfolioContent.email}',
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            gradient: const LinearGradient(
+                                              colors: [Palette.cyberPurple, Palette.cyberCyan],
+                                              begin: Alignment.topLeft,
+                                              end: Alignment.bottomRight,
+                                            ),
+                                            borderRadius: BorderRadius.circular(10),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Palette.cyberPurple.withValues(alpha: 0.25),
+                                                blurRadius: 8,
+                                                offset: const Offset(0, 3),
+                                              ),
+                                            ],
                                           ),
-                                          icon: const Icon(Icons.mail_outline,
-                                              size: 18),
-                                          label: const Text('Email'),
+                                          child: FilledButton.icon(
+                                            onPressed: () => _openUrl(
+                                              'mailto:${PortfolioContent.email}',
+                                            ),
+                                            icon: const Icon(Icons.mail_outline_rounded, size: 16, color: Colors.white),
+                                            label: const Text(
+                                              'Email',
+                                              style: TextStyle(fontWeight: FontWeight.w600, color: Colors.white, fontSize: 13),
+                                            ),
+                                            style: FilledButton.styleFrom(
+                                              backgroundColor: Colors.transparent,
+                                              shadowColor: Colors.transparent,
+                                              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
+                                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                            ),
+                                          ),
                                         ),
                                       ),
+                                      // ── Copy email ──
                                       Tooltip(
                                         message: 'Copy address to clipboard',
                                         child: OutlinedButton.icon(
                                           onPressed: _copyEmail,
-                                          icon: const Icon(
-                                              Icons.copy_rounded,
-                                              size: 18),
-                                          label: const Text('Copy email'),
+                                          icon: Icon(
+                                            Icons.copy_rounded,
+                                            size: 16,
+                                            color: isDark ? Colors.white60 : Colors.black54,
+                                          ),
+                                          label: Text(
+                                            'Copy email',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 13,
+                                              color: isDark ? Colors.white70 : Colors.black87,
+                                            ),
+                                          ),
+                                          style: OutlinedButton.styleFrom(
+                                            side: BorderSide(
+                                              color: (isDark ? Colors.white : Colors.black).withValues(alpha: 0.15),
+                                              width: 1,
+                                            ),
+                                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                          ),
                                         ),
                                       ),
-                                      if (PortfolioContent.githubUrl != null)
-                                        OutlinedButton(
-                                          onPressed: () => _openUrl(
-                                              PortfolioContent.githubUrl!),
-                                          child: const Text('GitHub'),
+                                      // ── Phone ──
+                                      Tooltip(
+                                        message: 'Call or text',
+                                        child: OutlinedButton.icon(
+                                          onPressed: () => _openUrl('tel:${PortfolioContent.phone}'),
+                                          icon: Icon(
+                                            Icons.phone_rounded,
+                                            size: 16,
+                                            color: isDark ? Colors.white60 : Colors.black54,
+                                          ),
+                                          label: Text(
+                                            PortfolioContent.phone,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 13,
+                                              color: isDark ? Colors.white70 : Colors.black87,
+                                            ),
+                                          ),
+                                          style: OutlinedButton.styleFrom(
+                                            side: BorderSide(
+                                              color: (isDark ? Colors.white : Colors.black).withValues(alpha: 0.15),
+                                              width: 1,
+                                            ),
+                                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                          ),
                                         ),
-                                      if (PortfolioContent.linkedInUrl != null)
-                                        OutlinedButton(
-                                          onPressed: () => _openUrl(
-                                              PortfolioContent.linkedInUrl!),
-                                          child: const Text('LinkedIn'),
+                                      ),
+                                      // ── GitHub ──
+                                      Tooltip(
+                                        message: 'View GitHub profile',
+                                        child: OutlinedButton.icon(
+                                          onPressed: () => _openUrl(PortfolioContent.githubUrl),
+                                          icon: Icon(
+                                            Icons.code_rounded,
+                                            size: 16,
+                                            color: isDark ? Colors.white60 : Colors.black54,
+                                          ),
+                                          label: Text(
+                                            'GitHub',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 13,
+                                              color: isDark ? Colors.white70 : Colors.black87,
+                                            ),
+                                          ),
+                                          style: OutlinedButton.styleFrom(
+                                            side: BorderSide(
+                                              color: (isDark ? Colors.white : Colors.black).withValues(alpha: 0.15),
+                                              width: 1,
+                                            ),
+                                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                          ),
                                         ),
+                                      ),
+                                      // ── LinkedIn ──
+                                      Tooltip(
+                                        message: 'Connect on LinkedIn',
+                                        child: OutlinedButton.icon(
+                                          onPressed: () => _openUrl(PortfolioContent.linkedInUrl),
+                                          icon: Icon(
+                                            Icons.work_outline_rounded,
+                                            size: 16,
+                                            color: isDark ? Colors.white60 : Colors.black54,
+                                          ),
+                                          label: Text(
+                                            'LinkedIn',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 13,
+                                              color: isDark ? Colors.white70 : Colors.black87,
+                                            ),
+                                          ),
+                                          style: OutlinedButton.styleFrom(
+                                            side: BorderSide(
+                                              color: (isDark ? Colors.white : Colors.black).withValues(alpha: 0.15),
+                                              width: 1,
+                                            ),
+                                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                          ),
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ],
@@ -637,8 +838,6 @@ class _PortfolioHomeState extends State<PortfolioHome> {
                               ),
                             ),
                           ],
-                        ),
-                      ),
                     ),
                   ),
                 ),

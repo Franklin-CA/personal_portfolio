@@ -14,11 +14,13 @@ class AppTheme {
       colorScheme: ColorScheme.light(
         surface: Palette.lightSurface,
         onSurface: Palette.lightInk,
-        primary: Palette.accent,
+        primary: Palette.cyberPurple,
+        secondary: Palette.cyberCyan,
+        tertiary: Palette.cyberPink,
         onPrimary: Colors.white,
         onSurfaceVariant: Palette.lightMuted,
         outline: Palette.lightRule,
-        outlineVariant: Palette.lightRule,
+        outlineVariant: Palette.lightRule.withValues(alpha: 0.5),
       ),
       appBarTheme: const AppBarTheme(
         elevation: 0,
@@ -120,11 +122,13 @@ class AppTheme {
       colorScheme: ColorScheme.dark(
         surface: Palette.darkSurface,
         onSurface: Palette.darkInk,
-        primary: Palette.accent,
+        primary: Palette.cyberPurple,
+        secondary: Palette.cyberCyan,
+        tertiary: Palette.cyberPink,
         onPrimary: Palette.darkBg,
         onSurfaceVariant: Palette.darkMuted,
         outline: Palette.darkRule,
-        outlineVariant: Palette.darkRule,
+        outlineVariant: Palette.darkRule.withValues(alpha: 0.5),
       ),
       appBarTheme: const AppBarTheme(
         elevation: 0,

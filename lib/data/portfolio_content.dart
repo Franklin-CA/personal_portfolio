@@ -134,17 +134,25 @@ class PortfolioContent {
       apkUrl:
           'https://drive.google.com/file/d/1KAV3B90_0Mwr-Ys-3tF9-ww6p82XDg92/view?usp=sharing',
     ),
+    Project(
+      title: 'Hovr',
+      description:
+          'Hovr is an innovative accessibility and utility mobile app designed to bridge the gap between physical tasks and digital interaction.\nBuilt to solve a common daily friction point, Hovr allows users to interact with their favorite social media apps (like TikTok, Instagram, and Facebook) completely hands-free—perfect for when their hands are wet, messy, or busy with chores.',
+      tags: ['Flutter', 'Mobile', 'Accessibility'],
+      apkUrl: 'https://drive.google.com/file/d/1zkO4AIzPkMYe-9WBb9l1XhrwDXtHce0F/view?usp=drive_link'
+    ),
   ];
 
   static const String contactTitle = 'Contact';
   static const String contactBlurb =
-      'Open to opportunities and collaborations. Reach out by email or connect on social.';
+      'Open to opportunities and collaborations. Reach out by email, phone, or connect on social.';
 
   static const String email = 'anyayafranklin27@gmail.com';
+  static const String phone = '09275869046';
 
   /// Set to your URLs, or null to hide the button.
-  static const String? githubUrl = null;
-  static const String? linkedInUrl = null;
+  static const String githubUrl = 'https://github.com/Franklin-CA';
+  static const String linkedInUrl = 'https://www.linkedin.com/in/franklin-anyaya-22b98537b';
 }
 
 class Certification {

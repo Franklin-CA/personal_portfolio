@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../data/portfolio_content.dart';
+import '../theme/palette.dart';
 
 class ProjectCard extends StatefulWidget {
   const ProjectCard({
@@ -79,14 +80,16 @@ class _ProjectCardState extends State<ProjectCard> with TickerProviderStateMixin
           child: AnimatedBuilder(
             animation: _glowAnimation,
             builder: (context, child) {
+              final isDark = Theme.of(context).brightness == Brightness.dark;
+
               return Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(24),
                   gradient: LinearGradient(
                     colors: [
-                      scheme.primary.withValues(alpha: _glowAnimation.value * 0.4),
-                      scheme.primary.withValues(alpha: _glowAnimation.value * 0.1),
-                      scheme.primary.withValues(alpha: _glowAnimation.value * 0.4),
+                      Palette.cyberPurple.withValues(alpha: _glowAnimation.value * 0.5),
+                      Palette.cyberCyan.withValues(alpha: _glowAnimation.value * 0.1),
+                      Palette.cyberPink.withValues(alpha: _glowAnimation.value * 0.5),
                     ],
                     stops: const [0.0, 0.5, 1.0],
                     begin: Alignment.topLeft,
@@ -94,25 +97,35 @@ class _ProjectCardState extends State<ProjectCard> with TickerProviderStateMixin
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: scheme.primary.withValues(alpha: _glowAnimation.value * 0.3),
+                      color: Palette.cyberPurple.withValues(
+                        alpha: _glowAnimation.value * (isDark ? 0.35 : 0.18),
+                      ),
                       blurRadius: _isHovered ? 40 : 20,
-                      spreadRadius: _isHovered ? 6 : 0,
-                      offset: Offset(0, _isHovered ? 10 : 5),
+                      spreadRadius: _isHovered ? 4 : -2,
+                      offset: Offset(_isHovered ? -6 : -2, _isHovered ? 6 : 2),
+                    ),
+                    BoxShadow(
+                      color: Palette.cyberCyan.withValues(
+                        alpha: _glowAnimation.value * (isDark ? 0.35 : 0.18),
+                      ),
+                      blurRadius: _isHovered ? 40 : 20,
+                      spreadRadius: _isHovered ? 4 : -2,
+                      offset: Offset(_isHovered ? 6 : 2, _isHovered ? -6 : -2),
                     ),
                   ],
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(2),
+                  padding: const EdgeInsets.all(1.5),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(22),
+                    borderRadius: BorderRadius.circular(22.5),
                     child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                      filter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
                       child: Container(
                         decoration: BoxDecoration(
-                          color: scheme.surface.withValues(alpha: 0.55),
-                          borderRadius: BorderRadius.circular(22),
+                          color: scheme.surface.withValues(alpha: isDark ? 0.65 : 0.78),
+                          borderRadius: BorderRadius.circular(22.5),
                           border: Border.all(
-                            color: scheme.primary.withValues(alpha: 0.2),
+                            color: Palette.cyberPurple.withValues(alpha: 0.15),
                             width: 1,
                           ),
                         ),
@@ -123,18 +136,22 @@ class _ProjectCardState extends State<ProjectCard> with TickerProviderStateMixin
                             children: [
                               Row(
                                 children: [
-                                  Text(widget.project.title, style: widget.titleStyle.copyWith(
-                                    foreground: Paint()
-                                      ..shader = LinearGradient(
-                                        colors: [
-                                          scheme.primary,
-                                          scheme.primary.withValues(alpha: 0.6),
-                                          scheme.primary,
-                                        ],
-                                      ).createShader(
-                                        const Rect.fromLTWH(0, 0, 200, 40),
-                                      ),
-                                  )),
+                                  Text(
+                                    widget.project.title,
+                                    style: widget.titleStyle.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      foreground: Paint()
+                                        ..shader = const LinearGradient(
+                                          colors: [
+                                            Palette.cyberPurple,
+                                            Palette.cyberCyan,
+                                            Palette.cyberPink,
+                                          ],
+                                        ).createShader(
+                                          const Rect.fromLTWH(0, 0, 240, 40),
+                                        ),
+                                    ),
+                                  ),
                                   if (widget.project.isFeatured) ...[
                                     const SizedBox(width: 12),
                                     Container(
@@ -145,23 +162,24 @@ class _ProjectCardState extends State<ProjectCard> with TickerProviderStateMixin
                                       decoration: BoxDecoration(
                                         gradient: LinearGradient(
                                           colors: [
-                                            scheme.primary.withValues(alpha: 0.25),
-                                            scheme.primary.withValues(alpha: 0.08),
+                                            Palette.cyberPink.withValues(alpha: 0.22),
+                                            Palette.cyberPink.withValues(alpha: 0.05),
                                           ],
                                           begin: Alignment.topLeft,
                                           end: Alignment.bottomRight,
                                         ),
                                         borderRadius: BorderRadius.circular(12),
                                         border: Border.all(
-                                          color: scheme.primary.withValues(alpha: 0.3),
+                                          color: Palette.cyberPink.withValues(alpha: 0.35),
                                         ),
                                       ),
                                       child: Text(
                                         'Featured',
                                         style: widget.mutedStyle.copyWith(
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.w600,
-                                          color: scheme.primary,
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w700,
+                                          color: Palette.cyberPink,
+                                          letterSpacing: 0.4,
                                         ),
                                       ),
                                     ),
@@ -169,7 +187,7 @@ class _ProjectCardState extends State<ProjectCard> with TickerProviderStateMixin
                                 ],
                               ),
                               if (widget.project.tags.isNotEmpty) ...[
-                                const SizedBox(height: 12),
+                                const SizedBox(height: 14),
                                 Wrap(
                                   spacing: 8,
                                   runSpacing: 8,
@@ -182,33 +200,36 @@ class _ProjectCardState extends State<ProjectCard> with TickerProviderStateMixin
                                       decoration: BoxDecoration(
                                         gradient: LinearGradient(
                                           colors: [
-                                            scheme.primary.withValues(alpha: 0.2),
-                                            scheme.primary.withValues(alpha: 0.08),
+                                            Palette.cyberCyan.withValues(alpha: 0.15),
+                                            Palette.cyberCyan.withValues(alpha: 0.04),
                                           ],
                                           begin: Alignment.topLeft,
                                           end: Alignment.bottomRight,
                                         ),
                                         borderRadius: BorderRadius.circular(20),
                                         border: Border.all(
-                                          color: scheme.primary.withValues(alpha: 0.2),
+                                          color: Palette.cyberCyan.withValues(alpha: 0.25),
                                         ),
                                       ),
                                       child: Text(
                                         tag,
                                         style: widget.mutedStyle.copyWith(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w500,
-                                          color: scheme.primary,
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.w600,
+                                          color: isDark ? Palette.cyberCyan : Palette.cyberPurple,
                                         ),
                                       ),
                                     );
                                   }).toList(),
                                 ),
                               ],
-                              const SizedBox(height: 16),
+                              const SizedBox(height: 18),
                               SelectableText(
                                 widget.project.description,
-                                style: widget.mutedStyle.copyWith(height: 1.5),
+                                style: widget.mutedStyle.copyWith(
+                                  height: 1.6,
+                                  color: isDark ? Colors.white70 : Colors.black87,
+                                ),
                               ),
                               const SizedBox(height: 24),
                               Wrap(
@@ -218,26 +239,70 @@ class _ProjectCardState extends State<ProjectCard> with TickerProviderStateMixin
                                   if (widget.project.liveUrl != null)
                                     Tooltip(
                                       message: 'Opens in your browser',
-                                      child: FilledButton.icon(
-                                        onPressed: () => widget.onOpen(widget.project.liveUrl!),
-                                        icon: const Icon(Icons.launch_rounded, size: 16),
-                                        label: const Text('Live site'),
-                                        style: FilledButton.styleFrom(
-                                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          gradient: const LinearGradient(
+                                            colors: [Palette.cyberPurple, Palette.cyberCyan],
+                                            begin: Alignment.topLeft,
+                                            end: Alignment.bottomRight,
+                                          ),
+                                          borderRadius: BorderRadius.circular(12),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Palette.cyberPurple.withValues(alpha: 0.3),
+                                              blurRadius: 8,
+                                              offset: const Offset(0, 4),
+                                            ),
+                                          ],
+                                        ),
+                                        child: FilledButton.icon(
+                                          onPressed: () => widget.onOpen(widget.project.liveUrl!),
+                                          icon: const Icon(Icons.launch_rounded, size: 16),
+                                          label: const Text(
+                                            'Live site',
+                                            style: TextStyle(fontWeight: FontWeight.bold),
+                                          ),
+                                          style: FilledButton.styleFrom(
+                                            backgroundColor: Colors.transparent,
+                                            shadowColor: Colors.transparent,
+                                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                          ),
                                         ),
                                       ),
                                     ),
                                   if (widget.project.apkUrl != null)
                                     Tooltip(
                                       message: 'Download APK',
-                                      child: FilledButton.icon(
-                                        onPressed: () => widget.onOpen(widget.project.apkUrl!),
-                                        icon: const Icon(Icons.download_rounded, size: 16),
-                                        label: const Text('Download APK'),
-                                        style: FilledButton.styleFrom(
-                                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          gradient: const LinearGradient(
+                                            colors: [Palette.cyberPink, Palette.cyberPurple],
+                                            begin: Alignment.topLeft,
+                                            end: Alignment.bottomRight,
+                                          ),
+                                          borderRadius: BorderRadius.circular(12),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Palette.cyberPink.withValues(alpha: 0.3),
+                                              blurRadius: 8,
+                                              offset: const Offset(0, 4),
+                                            ),
+                                          ],
+                                        ),
+                                        child: FilledButton.icon(
+                                          onPressed: () => widget.onOpen(widget.project.apkUrl!),
+                                          icon: const Icon(Icons.download_rounded, size: 16),
+                                          label: const Text(
+                                            'Download APK',
+                                            style: TextStyle(fontWeight: FontWeight.bold),
+                                          ),
+                                          style: FilledButton.styleFrom(
+                                            backgroundColor: Colors.transparent,
+                                            shadowColor: Colors.transparent,
+                                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                          ),
                                         ),
                                       ),
                                     ),

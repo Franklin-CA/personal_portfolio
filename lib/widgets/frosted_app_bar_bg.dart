@@ -1,9 +1,9 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
-
 import '../theme/palette.dart';
 
 // ──────────────────────────────────────────────────────────────────────────────
-// Frosted app-bar background
+// Frosted app-bar background with premium glassmorphic blur
 // ──────────────────────────────────────────────────────────────────────────────
 
 class FrostedAppBarBg extends StatelessWidget {
@@ -13,10 +13,23 @@ class FrostedAppBarBg extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: (isDark ? Palette.darkBg : Palette.lightBg)
-            .withValues(alpha: 0.82),
+    final scheme = Theme.of(context).colorScheme;
+
+    return ClipRect(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
+        child: Container(
+          decoration: BoxDecoration(
+            color: (isDark ? Palette.darkBg : Palette.lightBg)
+                .withValues(alpha: 0.72),
+            border: Border(
+              bottom: BorderSide(
+                color: scheme.primary.withValues(alpha: 0.12),
+                width: 1,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

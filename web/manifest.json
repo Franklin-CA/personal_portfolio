@@ -1,12 +1,12 @@
 {
-    "name": "personal_portfolio",
-    "short_name": "personal_portfolio",
+    "name": "Franklin Anyaya — Flutter Developer",
+    "short_name": "Franklin Anyaya",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
-    "orientation": "portrait-primary",
+    "background_color": "#0D0D12",
+    "theme_color": "#0D0D12",
+    "description": "Portfolio of Franklin Anyaya — Full-Stack Flutter Developer building cross-platform apps with Flutter and Firebase.",
+    "orientation": "any",
     "prefer_related_applications": false,
     "icons": [
         {
