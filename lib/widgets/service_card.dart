@@ -1,7 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../data/portfolio_content.dart';
-import '../theme/palette.dart';
 
 class ServiceCard extends StatefulWidget {
   const ServiceCard({super.key, required this.service});
@@ -91,9 +90,9 @@ class _ServiceCardState extends State<ServiceCard>
                   borderRadius: BorderRadius.circular(20),
                   gradient: LinearGradient(
                     colors: [
-                      Palette.cyberPurple.withValues(alpha: _glowAnimation.value * 0.5),
-                      Palette.cyberCyan.withValues(alpha: _glowAnimation.value * 0.1),
-                      Palette.cyberPink.withValues(alpha: _glowAnimation.value * 0.5),
+                      scheme.primary.withValues(alpha: _glowAnimation.value * 0.5),
+                      scheme.secondary.withValues(alpha: _glowAnimation.value * 0.1),
+                      scheme.tertiary.withValues(alpha: _glowAnimation.value * 0.5),
                     ],
                     stops: const [0.0, 0.5, 1.0],
                     begin: Alignment.topLeft,
@@ -101,7 +100,7 @@ class _ServiceCardState extends State<ServiceCard>
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Palette.cyberPurple.withValues(
+                      color: scheme.primary.withValues(
                         alpha: _glowAnimation.value * (isDark ? 0.35 : 0.18),
                       ),
                       blurRadius: _isHovered ? 40 : 20,
@@ -109,7 +108,7 @@ class _ServiceCardState extends State<ServiceCard>
                       offset: Offset(_isHovered ? -5 : -2, _isHovered ? 5 : 2),
                     ),
                     BoxShadow(
-                      color: Palette.cyberCyan.withValues(
+                      color: scheme.secondary.withValues(
                         alpha: _glowAnimation.value * (isDark ? 0.35 : 0.18),
                       ),
                       blurRadius: _isHovered ? 40 : 20,
@@ -129,7 +128,7 @@ class _ServiceCardState extends State<ServiceCard>
                           color: scheme.surface.withValues(alpha: isDark ? 0.65 : 0.78),
                           borderRadius: BorderRadius.circular(18.5),
                           border: Border.all(
-                            color: Palette.cyberPurple.withValues(alpha: 0.15),
+                            color: scheme.primary.withValues(alpha: 0.15),
                             width: 1,
                           ),
                         ),
@@ -143,21 +142,21 @@ class _ServiceCardState extends State<ServiceCard>
                                 decoration: BoxDecoration(
                                   gradient: LinearGradient(
                                     colors: [
-                                      Palette.cyberCyan.withValues(alpha: 0.22),
-                                      Palette.cyberCyan.withValues(alpha: 0.04),
+                                      scheme.secondary.withValues(alpha: 0.22),
+                                      scheme.secondary.withValues(alpha: 0.04),
                                     ],
                                     begin: Alignment.topLeft,
                                     end: Alignment.bottomRight,
                                   ),
                                   borderRadius: BorderRadius.circular(14),
                                   border: Border.all(
-                                    color: Palette.cyberCyan.withValues(alpha: 0.3),
+                                    color: scheme.secondary.withValues(alpha: 0.3),
                                   ),
                                 ),
                                 child: Icon(
                                   _getIcon(),
                                   size: 32,
-                                  color: Palette.cyberCyan,
+                                  color: scheme.secondary,
                                 ),
                               ),
                               const SizedBox(height: 20),
@@ -166,11 +165,11 @@ class _ServiceCardState extends State<ServiceCard>
                                 style: t.titleMedium?.copyWith(
                                   fontWeight: FontWeight.bold,
                                   foreground: Paint()
-                                    ..shader = const LinearGradient(
+                                    ..shader = LinearGradient(
                                       colors: [
-                                        Palette.cyberPurple,
-                                        Palette.cyberCyan,
-                                        Palette.cyberPink,
+                                        scheme.primary,
+                                        scheme.secondary,
+                                        scheme.tertiary,
                                       ],
                                     ).createShader(
                                       const Rect.fromLTWH(0, 0, 160, 40),

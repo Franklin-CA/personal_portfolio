@@ -1,7 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../data/portfolio_content.dart';
-import '../theme/palette.dart';
 
 class SkillGroupCard extends StatefulWidget {
   const SkillGroupCard({
@@ -58,9 +57,9 @@ class _SkillGroupCardState extends State<SkillGroupCard> with TickerProviderStat
                 borderRadius: BorderRadius.circular(20),
                 gradient: LinearGradient(
                   colors: [
-                    Palette.cyberPurple.withValues(alpha: _glowAnimation.value * 0.5),
-                    Palette.cyberCyan.withValues(alpha: _glowAnimation.value * 0.1),
-                    Palette.cyberPink.withValues(alpha: _glowAnimation.value * 0.5),
+                    scheme.primary.withValues(alpha: _glowAnimation.value * 0.5),
+                    scheme.secondary.withValues(alpha: _glowAnimation.value * 0.1),
+                    scheme.tertiary.withValues(alpha: _glowAnimation.value * 0.5),
                   ],
                   stops: const [0.0, 0.5, 1.0],
                   begin: Alignment.topLeft,
@@ -68,7 +67,7 @@ class _SkillGroupCardState extends State<SkillGroupCard> with TickerProviderStat
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Palette.cyberPurple.withValues(
+                    color: scheme.primary.withValues(
                       alpha: _glowAnimation.value * (isDark ? 0.35 : 0.18),
                     ),
                     blurRadius: _isHovered ? 35 : 18,
@@ -76,7 +75,7 @@ class _SkillGroupCardState extends State<SkillGroupCard> with TickerProviderStat
                     offset: Offset(_isHovered ? -5 : -2, _isHovered ? 5 : 2),
                   ),
                   BoxShadow(
-                    color: Palette.cyberCyan.withValues(
+                    color: scheme.secondary.withValues(
                       alpha: _glowAnimation.value * (isDark ? 0.35 : 0.18),
                     ),
                     blurRadius: _isHovered ? 35 : 18,
@@ -96,7 +95,7 @@ class _SkillGroupCardState extends State<SkillGroupCard> with TickerProviderStat
                         color: scheme.surface.withValues(alpha: isDark ? 0.65 : 0.78),
                         borderRadius: BorderRadius.circular(18.5),
                         border: Border.all(
-                          color: Palette.cyberPurple.withValues(alpha: 0.15),
+                          color: scheme.primary.withValues(alpha: 0.15),
                           width: 1,
                         ),
                       ),
@@ -111,8 +110,8 @@ class _SkillGroupCardState extends State<SkillGroupCard> with TickerProviderStat
                                 width: 4,
                                 height: 18,
                                 decoration: BoxDecoration(
-                                  gradient: const LinearGradient(
-                                    colors: [Palette.cyberPurple, Palette.cyberCyan],
+                                  gradient: LinearGradient(
+                                    colors: [scheme.primary, scheme.secondary],
                                     begin: Alignment.topCenter,
                                     end: Alignment.bottomCenter,
                                   ),
@@ -125,11 +124,11 @@ class _SkillGroupCardState extends State<SkillGroupCard> with TickerProviderStat
                                 style: textTheme.titleSmall!.copyWith(
                                   fontWeight: FontWeight.bold,
                                   foreground: Paint()
-                                    ..shader = const LinearGradient(
+                                    ..shader = LinearGradient(
                                       colors: [
-                                        Palette.cyberPurple,
-                                        Palette.cyberCyan,
-                                        Palette.cyberPink,
+                                        scheme.primary,
+                                        scheme.secondary,
+                                        scheme.tertiary,
                                       ],
                                     ).createShader(
                                       const Rect.fromLTWH(0, 0, 200, 30),
@@ -178,6 +177,7 @@ class _SkillChipState extends State<_SkillChip> {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final scheme = Theme.of(context).colorScheme;
 
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
@@ -192,11 +192,11 @@ class _SkillChipState extends State<_SkillChip> {
           gradient: LinearGradient(
             colors: [
               _isHovered
-                  ? Palette.cyberPurple
-                  : Palette.cyberPurple.withValues(alpha: 0.15),
+                  ? scheme.primary
+                  : scheme.primary.withValues(alpha: 0.15),
               _isHovered
-                  ? Palette.cyberCyan
-                  : Palette.cyberCyan.withValues(alpha: 0.03),
+                  ? scheme.secondary
+                  : scheme.secondary.withValues(alpha: 0.03),
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -204,14 +204,14 @@ class _SkillChipState extends State<_SkillChip> {
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: _isHovered
-                ? Palette.cyberCyan
-                : Palette.cyberPurple.withValues(alpha: 0.25),
+                ? scheme.secondary
+                : scheme.primary.withValues(alpha: 0.25),
             width: 1,
           ),
           boxShadow: _isHovered
               ? [
                   BoxShadow(
-                    color: Palette.cyberPurple.withValues(alpha: 0.3),
+                    color: scheme.primary.withValues(alpha: 0.3),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   )
@@ -223,7 +223,7 @@ class _SkillChipState extends State<_SkillChip> {
           style: textTheme.bodySmall!.copyWith(
             color: _isHovered
                 ? Colors.white
-                : (isDark ? Palette.cyberCyan : Palette.cyberPurple),
+                : (isDark ? scheme.secondary : scheme.primary),
             fontWeight: FontWeight.bold,
             letterSpacing: 0.2,
           ),

@@ -2,8 +2,6 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import '../theme/palette.dart';
-
 // ──────────────────────────────────────────────────────────────────────────────
 // Animated gradient headline
 // ──────────────────────────────────────────────────────────────────────────────
@@ -52,7 +50,7 @@ class _AnimatedGradientTextState extends State<AnimatedGradientText>
             return LinearGradient(
               colors: [
                 scheme.primary,
-                Palette.accentLight,
+                scheme.secondary,
                 scheme.primary,
               ],
               stops: [

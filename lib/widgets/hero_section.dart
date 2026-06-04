@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../data/portfolio_content.dart';
-import '../theme/palette.dart';
 import 'animated_gradient_text.dart';
 import 'profile_photo.dart';
 
@@ -29,7 +28,12 @@ class HeroSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final photo = ProfilePhoto(scheme: scheme);
+    final photo = Semantics(
+      label: "Profile photo of ${PortfolioContent.name}. Double tap or click to trigger Sharingan animation easter egg.",
+      image: true,
+      button: true,
+      child: ProfilePhoto(scheme: scheme),
+    );
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final borderColor = (isDark ? Colors.white : Colors.black).withValues(alpha: 0.15);
     final iconColor = isDark ? Colors.white60 : Colors.black54;
@@ -73,15 +77,15 @@ class HeroSection extends StatelessWidget {
                     message: 'Scroll to the projects list',
                     child: Container(
                       decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: [Palette.cyberPurple, Palette.cyberCyan],
+                        gradient: LinearGradient(
+                          colors: [scheme.primary, scheme.secondary],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         ),
                         borderRadius: BorderRadius.circular(10),
                         boxShadow: [
                           BoxShadow(
-                            color: Palette.cyberPurple.withValues(alpha: 0.3),
+                            color: scheme.primary.withValues(alpha: 0.3),
                             blurRadius: 10,
                             offset: const Offset(0, 4),
                           ),
@@ -95,9 +99,13 @@ class HeroSection extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 14),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                         ),
-                        child: const Text(
+                        child: Text(
                           'View projects',
-                          style: TextStyle(fontWeight: FontWeight.w600, color: Colors.white, fontSize: 13),
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: scheme.onPrimary,
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                     ),
@@ -125,36 +133,40 @@ class HeroSection extends StatelessWidget {
                   Container(width: 1, height: 28, color: borderColor),
                   const SizedBox(width: 16),
                   // GitHub
-                  Tooltip(
-                    message: 'GitHub',
-                    child: InkWell(
-                      onTap: () => onOpenUrl(PortfolioContent.githubUrl),
-                      borderRadius: BorderRadius.circular(8),
-                      child: Container(
-                        padding: const EdgeInsets.all(9),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: borderColor, width: 1),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Icon(Icons.code_rounded, size: 18, color: iconColor),
+                  IconButton(
+                    tooltip: 'GitHub',
+                    onPressed: () => onOpenUrl(PortfolioContent.githubUrl),
+                    icon: Semantics(
+                      label: "Franklin's GitHub profile",
+                      button: true,
+                      child: Icon(Icons.code_rounded, size: 18, color: iconColor),
+                    ),
+                    style: IconButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        side: BorderSide(color: borderColor, width: 1),
                       ),
+                      minimumSize: const Size(48, 48),
+                      padding: const EdgeInsets.all(10),
                     ),
                   ),
                   const SizedBox(width: 8),
                   // LinkedIn
-                  Tooltip(
-                    message: 'LinkedIn',
-                    child: InkWell(
-                      onTap: () => onOpenUrl(PortfolioContent.linkedInUrl),
-                      borderRadius: BorderRadius.circular(8),
-                      child: Container(
-                        padding: const EdgeInsets.all(9),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: borderColor, width: 1),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Icon(Icons.work_outline_rounded, size: 18, color: iconColor),
+                  IconButton(
+                    tooltip: 'LinkedIn',
+                    onPressed: () => onOpenUrl(PortfolioContent.linkedInUrl),
+                    icon: Semantics(
+                      label: "Franklin's LinkedIn profile",
+                      button: true,
+                      child: Icon(Icons.work_outline_rounded, size: 18, color: iconColor),
+                    ),
+                    style: IconButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        side: BorderSide(color: borderColor, width: 1),
                       ),
+                      minimumSize: const Size(48, 48),
+                      padding: const EdgeInsets.all(10),
                     ),
                   ),
                 ],
@@ -167,15 +179,15 @@ class HeroSection extends StatelessWidget {
                     message: 'Scroll to the projects list',
                     child: Container(
                       decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: [Palette.cyberPurple, Palette.cyberCyan],
+                        gradient: LinearGradient(
+                          colors: [scheme.primary, scheme.secondary],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         ),
                         borderRadius: BorderRadius.circular(10),
                         boxShadow: [
                           BoxShadow(
-                            color: Palette.cyberPurple.withValues(alpha: 0.3),
+                            color: scheme.primary.withValues(alpha: 0.3),
                             blurRadius: 10,
                             offset: const Offset(0, 4),
                           ),
@@ -189,9 +201,13 @@ class HeroSection extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 14),
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                         ),
-                        child: const Text(
+                        child: Text(
                           'View projects',
-                          style: TextStyle(fontWeight: FontWeight.w600, color: Colors.white, fontSize: 13),
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: scheme.onPrimary,
+                            fontSize: 13,
+                          ),
                         ),
                       ),
                     ),
@@ -218,35 +234,39 @@ class HeroSection extends StatelessWidget {
                   // Social icons row
                   Row(
                     children: [
-                      Tooltip(
-                        message: 'GitHub',
-                        child: InkWell(
-                          onTap: () => onOpenUrl(PortfolioContent.githubUrl),
-                          borderRadius: BorderRadius.circular(8),
-                          child: Container(
-                            padding: const EdgeInsets.all(9),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: borderColor, width: 1),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Icon(Icons.code_rounded, size: 18, color: iconColor),
+                      IconButton(
+                        tooltip: 'GitHub',
+                        onPressed: () => onOpenUrl(PortfolioContent.githubUrl),
+                        icon: Semantics(
+                          label: "Franklin's GitHub profile",
+                          button: true,
+                          child: Icon(Icons.code_rounded, size: 18, color: iconColor),
+                        ),
+                        style: IconButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            side: BorderSide(color: borderColor, width: 1),
                           ),
+                          minimumSize: const Size(48, 48),
+                          padding: const EdgeInsets.all(10),
                         ),
                       ),
                       const SizedBox(width: 8),
-                      Tooltip(
-                        message: 'LinkedIn',
-                        child: InkWell(
-                          onTap: () => onOpenUrl(PortfolioContent.linkedInUrl),
-                          borderRadius: BorderRadius.circular(8),
-                          child: Container(
-                            padding: const EdgeInsets.all(9),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: borderColor, width: 1),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Icon(Icons.work_outline_rounded, size: 18, color: iconColor),
+                      IconButton(
+                        tooltip: 'LinkedIn',
+                        onPressed: () => onOpenUrl(PortfolioContent.linkedInUrl),
+                        icon: Semantics(
+                          label: "Franklin's LinkedIn profile",
+                          button: true,
+                          child: Icon(Icons.work_outline_rounded, size: 18, color: iconColor),
+                        ),
+                        style: IconButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            side: BorderSide(color: borderColor, width: 1),
                           ),
+                          minimumSize: const Size(48, 48),
+                          padding: const EdgeInsets.all(10),
                         ),
                       ),
                     ],
@@ -311,6 +331,7 @@ class _PulseBadgeState extends State<_PulseBadge> with SingleTickerProviderState
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final scheme = Theme.of(context).colorScheme;
 
     return AnimatedBuilder(
       animation: _pulseController,
@@ -318,48 +339,51 @@ class _PulseBadgeState extends State<_PulseBadge> with SingleTickerProviderState
         final scale = 1.0 + _pulseController.value * 0.25;
         final opacity = 0.5 + _pulseController.value * 0.5;
 
-        return Container(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-          decoration: BoxDecoration(
-            color: Palette.cyberCyan.withValues(alpha: isDark ? 0.08 : 0.04),
-            borderRadius: BorderRadius.circular(30),
-            border: Border.all(
-              color: Palette.cyberCyan.withValues(alpha: 0.25),
-              width: 1,
+        return Semantics(
+          label: "Status: Available for collaboration",
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+            decoration: BoxDecoration(
+              color: scheme.secondary.withValues(alpha: isDark ? 0.08 : 0.04),
+              borderRadius: BorderRadius.circular(30),
+              border: Border.all(
+                color: scheme.secondary.withValues(alpha: 0.25),
+                width: 1,
+              ),
             ),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Transform.scale(
-                scale: scale,
-                child: Container(
-                  width: 8,
-                  height: 8,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Palette.cyberCyan,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Palette.cyberCyan.withValues(alpha: opacity * 0.6),
-                        blurRadius: 6,
-                        spreadRadius: 2,
-                      ),
-                    ],
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Transform.scale(
+                  scale: scale,
+                  child: Container(
+                    width: 8,
+                    height: 8,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: scheme.secondary,
+                      boxShadow: [
+                        BoxShadow(
+                          color: scheme.secondary.withValues(alpha: opacity * 0.6),
+                          blurRadius: 6,
+                          spreadRadius: 2,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 10),
-              Text(
-                'AVAILABLE FOR COLLABORATION',
-                style: TextStyle(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w900,
-                  letterSpacing: 1.2,
-                  color: isDark ? Palette.cyberCyan : Palette.cyberPurple,
+                const SizedBox(width: 10),
+                Text(
+                  'AVAILABLE FOR COLLABORATION',
+                  style: TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: 1.2,
+                    color: isDark ? scheme.secondary : scheme.primary,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },

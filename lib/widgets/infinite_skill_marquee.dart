@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
 import '../data/portfolio_content.dart';
-import '../theme/palette.dart';
 
 class InfiniteSkillsSection extends StatelessWidget {
   const InfiniteSkillsSection({super.key});
@@ -61,8 +60,6 @@ class _MarqueeRowState extends State<_MarqueeRow>
   late Ticker _ticker;
   double _scrollPosition = 0.0;
 
-  // Removed explicit fixed scrollSpeed class variable to inline it safely inside the ticker
-
   @override
   void initState() {
     super.initState();
@@ -73,18 +70,13 @@ class _MarqueeRowState extends State<_MarqueeRow>
 
     _ticker = createTicker((elapsed) {
       if (!_scrollController.hasClients) {
-        // CRITICAL FIX: If clients aren't attached yet on the first frame, 
-        // the Ticker will silently die because no layout changes were requested. 
-        // We force a rebuild here to keep the engine rendering until clients attach!
         if (mounted) setState(() {});
         return;
       }
       
-      // Speed bumped slightly so the movement is immediately obvious
       const double speed = 1.2;
       _scrollPosition += widget.reverse ? -speed : speed;
 
-      // Handle the edge case if scrolling backward hits 0
       if (_scrollPosition <= 0 && widget.reverse) {
         _scrollPosition = 100000.0;
       }
@@ -92,7 +84,6 @@ class _MarqueeRowState extends State<_MarqueeRow>
       _scrollController.jumpTo(_scrollPosition);
     });
     
-    // Guarantee that standard layout is fully completed before attempting to tick
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted && !_ticker.isActive) {
         _ticker.start();
@@ -117,8 +108,6 @@ class _MarqueeRowState extends State<_MarqueeRow>
 
   @override
   Widget build(BuildContext context) {
-    // We duplicate the items visually to ensure there are always enough items to fill the screen initially
-    // even if the user only specifies a few skills.
     final extendedSkills = [
       ...widget.skills,
       ...widget.skills,
@@ -127,12 +116,11 @@ class _MarqueeRowState extends State<_MarqueeRow>
     ];
 
     return SizedBox(
-      height: 70, // Increased height slightly to accommodate beautiful drop shadows
+      height: 70,
       child: ListView.builder(
         controller: _scrollController,
         scrollDirection: Axis.horizontal,
         physics: const NeverScrollableScrollPhysics(),
-        // Make it genuinely infinite
         itemBuilder: (context, index) {
           final skillIndex = index % extendedSkills.length;
           final skill = extendedSkills[skillIndex];
@@ -165,6 +153,7 @@ class _GlassSkillChipState extends State<_GlassSkillChip> {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final scheme = Theme.of(context).colorScheme;
 
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
@@ -179,11 +168,11 @@ class _GlassSkillChipState extends State<_GlassSkillChip> {
           gradient: LinearGradient(
             colors: [
               _isHovered
-                  ? Palette.cyberPurple
-                  : Palette.cyberPurple.withValues(alpha: 0.12),
+                  ? scheme.primary
+                  : scheme.primary.withValues(alpha: 0.12),
               _isHovered
-                  ? Palette.cyberCyan
-                  : Palette.cyberCyan.withValues(alpha: 0.02),
+                  ? scheme.secondary
+                  : scheme.secondary.withValues(alpha: 0.02),
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -191,14 +180,14 @@ class _GlassSkillChipState extends State<_GlassSkillChip> {
           borderRadius: BorderRadius.circular(30),
           border: Border.all(
             color: _isHovered
-                ? Palette.cyberCyan
-                : Palette.cyberPurple.withValues(alpha: 0.22),
+                ? scheme.secondary
+                : scheme.primary.withValues(alpha: 0.22),
             width: 1,
           ),
           boxShadow: _isHovered
               ? [
                   BoxShadow(
-                    color: Palette.cyberPurple.withValues(alpha: 0.3),
+                    color: scheme.primary.withValues(alpha: 0.3),
                     blurRadius: 16,
                     offset: const Offset(0, 8),
                   )
@@ -216,7 +205,7 @@ class _GlassSkillChipState extends State<_GlassSkillChip> {
           style: textTheme.titleSmall!.copyWith(
             color: _isHovered
                 ? Colors.white
-                : (isDark ? Palette.cyberCyan : Palette.cyberPurple),
+                : (isDark ? scheme.secondary : scheme.primary),
             fontWeight: FontWeight.bold,
             letterSpacing: 0.5,
           ),

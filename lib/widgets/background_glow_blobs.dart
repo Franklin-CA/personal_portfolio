@@ -1,7 +1,6 @@
 import 'dart:math' as math;
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import '../theme/palette.dart';
 
 /// A premium, performance-optimized background widget that slowly animates 
 /// floating, glowing colored blobs behind a deep glass blur.
@@ -53,9 +52,11 @@ class _BackgroundGlowBlobsState extends State<BackgroundGlowBlobs>
         final x3 = size.width * 0.45 + math.sin(t * 1.5) * 60;
         final y3 = size.height * 0.85 + math.cos(t * 1.5) * 60;
 
+        final scheme = Theme.of(context).colorScheme;
+
         return Stack(
           children: [
-            // Blob 1: Cyber Purple
+            // Blob 1: Primary Accent
             Positioned(
               left: x1 - 180,
               top: y1 - 180,
@@ -64,13 +65,13 @@ class _BackgroundGlowBlobsState extends State<BackgroundGlowBlobs>
                 height: 360,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Palette.cyberPurple.withValues(
+                  color: scheme.primary.withValues(
                     alpha: isDark ? 0.12 : 0.08,
                   ),
                 ),
               ),
             ),
-            // Blob 2: Cyber Cyan
+            // Blob 2: Secondary Accent
             Positioned(
               left: x2 - 200,
               top: y2 - 200,
@@ -79,13 +80,13 @@ class _BackgroundGlowBlobsState extends State<BackgroundGlowBlobs>
                 height: 400,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Palette.cyberCyan.withValues(
+                  color: scheme.secondary.withValues(
                     alpha: isDark ? 0.10 : 0.06,
                   ),
                 ),
               ),
             ),
-            // Blob 3: Cyber Pink
+            // Blob 3: Tertiary Accent
             Positioned(
               left: x3 - 160,
               top: y3 - 160,
@@ -94,7 +95,7 @@ class _BackgroundGlowBlobsState extends State<BackgroundGlowBlobs>
                 height: 320,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Palette.cyberPink.withValues(
+                  color: scheme.tertiary.withValues(
                     alpha: isDark ? 0.10 : 0.06,
                   ),
                 ),

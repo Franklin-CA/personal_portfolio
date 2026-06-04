@@ -1,7 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../data/portfolio_content.dart';
-import '../theme/palette.dart';
 
 class CertificationCard extends StatefulWidget {
   const CertificationCard({
@@ -66,9 +65,9 @@ class _CertificationCardState extends State<CertificationCard> with TickerProvid
                   borderRadius: BorderRadius.circular(24),
                   gradient: LinearGradient(
                     colors: [
-                      Palette.cyberPurple.withValues(alpha: _glowAnimation.value * 0.5),
-                      Palette.cyberCyan.withValues(alpha: _glowAnimation.value * 0.1),
-                      Palette.cyberPink.withValues(alpha: _glowAnimation.value * 0.5),
+                      scheme.primary.withValues(alpha: _glowAnimation.value * 0.5),
+                      scheme.secondary.withValues(alpha: _glowAnimation.value * 0.1),
+                      scheme.tertiary.withValues(alpha: _glowAnimation.value * 0.5),
                     ],
                     stops: const [0.0, 0.5, 1.0],
                     begin: Alignment.topLeft,
@@ -76,7 +75,7 @@ class _CertificationCardState extends State<CertificationCard> with TickerProvid
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Palette.cyberPurple.withValues(
+                      color: scheme.primary.withValues(
                         alpha: _glowAnimation.value * (isDark ? 0.35 : 0.18),
                       ),
                       blurRadius: _hover ? 50 : 25,
@@ -84,7 +83,7 @@ class _CertificationCardState extends State<CertificationCard> with TickerProvid
                       offset: Offset(_hover ? -6 : -2, _hover ? 6 : 2),
                     ),
                     BoxShadow(
-                      color: Palette.cyberCyan.withValues(
+                      color: scheme.secondary.withValues(
                         alpha: _glowAnimation.value * (isDark ? 0.35 : 0.18),
                       ),
                       blurRadius: _hover ? 50 : 25,
@@ -104,7 +103,7 @@ class _CertificationCardState extends State<CertificationCard> with TickerProvid
                           color: scheme.surface.withValues(alpha: isDark ? 0.65 : 0.78),
                           borderRadius: BorderRadius.circular(22.5),
                           border: Border.all(
-                            color: Palette.cyberPurple.withValues(alpha: 0.15),
+                            color: scheme.primary.withValues(alpha: 0.15),
                             width: 1,
                           ),
                         ),
@@ -120,11 +119,11 @@ class _CertificationCardState extends State<CertificationCard> with TickerProvid
                                   style: widget.titleStyle.copyWith(
                                     fontWeight: FontWeight.bold,
                                     foreground: Paint()
-                                      ..shader = const LinearGradient(
+                                      ..shader = LinearGradient(
                                         colors: [
-                                          Palette.cyberPurple,
-                                          Palette.cyberCyan,
-                                          Palette.cyberPink,
+                                          scheme.primary,
+                                          scheme.secondary,
+                                          scheme.tertiary,
                                         ],
                                       ).createShader(
                                         const Rect.fromLTWH(0, 0, 240, 40),
@@ -138,15 +137,15 @@ class _CertificationCardState extends State<CertificationCard> with TickerProvid
                                 decoration: BoxDecoration(
                                   gradient: LinearGradient(
                                     colors: [
-                                      Palette.cyberPurple.withValues(alpha: 0.22),
-                                      Palette.cyberPurple.withValues(alpha: 0.04),
+                                      scheme.primary.withValues(alpha: 0.22),
+                                      scheme.primary.withValues(alpha: 0.04),
                                     ],
                                     begin: Alignment.topLeft,
                                     end: Alignment.bottomRight,
                                   ),
                                   borderRadius: BorderRadius.circular(28),
                                   border: Border.all(
-                                    color: Palette.cyberPurple.withValues(alpha: 0.35),
+                                    color: scheme.primary.withValues(alpha: 0.35),
                                     width: 1,
                                   ),
                                 ),
@@ -155,7 +154,7 @@ class _CertificationCardState extends State<CertificationCard> with TickerProvid
                                   style: widget.mutedStyle.copyWith(
                                     fontSize: 11,
                                     fontWeight: FontWeight.w800,
-                                    color: isDark ? Palette.cyberCyan : Palette.cyberPurple,
+                                    color: isDark ? scheme.secondary : scheme.primary,
                                     letterSpacing: 0.8,
                                   ),
                                 ),
@@ -185,13 +184,13 @@ class _CertificationCardState extends State<CertificationCard> with TickerProvid
                                   child: Container(
                                     decoration: BoxDecoration(
                                       border: Border.all(
-                                        color: Palette.cyberCyan.withValues(alpha: 0.25),
+                                        color: scheme.secondary.withValues(alpha: 0.25),
                                         width: 1.5,
                                       ),
                                       borderRadius: BorderRadius.circular(18),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: Palette.cyberCyan.withValues(alpha: 0.15),
+                                          color: scheme.secondary.withValues(alpha: 0.15),
                                           blurRadius: 25,
                                           spreadRadius: 3,
                                         ),

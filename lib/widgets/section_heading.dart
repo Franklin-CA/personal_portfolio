@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../theme/palette.dart';
 
 // ──────────────────────────────────────────────────────────────────────────────
 // Section heading with cyber gradient underline
@@ -13,6 +12,7 @@ class SectionHeading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final t = Theme.of(context).textTheme;
+    final scheme = Theme.of(context).colorScheme;
     return Semantics(
       header: true,
       child: Column(
@@ -31,10 +31,10 @@ class SectionHeading extends StatelessWidget {
             height: 4,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(2),
-              gradient: const LinearGradient(
+              gradient: LinearGradient(
                 colors: [
-                  Palette.cyberPurple,
-                  Palette.cyberCyan,
+                  scheme.primary,
+                  scheme.secondary,
                 ],
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,

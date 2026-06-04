@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../data/portfolio_content.dart';
-import '../theme/palette.dart';
+import '../theme/app_theme.dart';
 import '../widgets/background_glow_blobs.dart';
 import '../widgets/certification_card.dart';
 import '../widgets/fade_slide_in.dart';
@@ -27,10 +27,14 @@ class PortfolioHome extends StatefulWidget {
     super.key,
     required this.isDarkMode,
     required this.onToggleTheme,
+    required this.themeFlavor,
+    required this.onToggleThemeFlavor,
   });
 
   final bool isDarkMode;
   final VoidCallback onToggleTheme;
+  final ThemeFlavor themeFlavor;
+  final VoidCallback onToggleThemeFlavor;
 
   @override
   State<PortfolioHome> createState() => _PortfolioHomeState();
@@ -235,6 +239,31 @@ class _PortfolioHomeState extends State<PortfolioHome> {
                               value: 'contact', child: Text('Contact')),
                         ],
                       ),
+                    // Theme Flavor Switcher Button
+                    Semantics(
+                      label: 'Switch visual theme design style',
+                      button: true,
+                      child: IconButton(
+                        tooltip: widget.themeFlavor == ThemeFlavor.cyberpunk
+                            ? 'Switch to Jade Pebble theme'
+                            : 'Switch to Cyberpunk theme',
+                        onPressed: widget.onToggleThemeFlavor,
+                        icon: AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 300),
+                          transitionBuilder: (child, anim) => RotationTransition(
+                            turns: Tween(begin: 0.75, end: 1.0).animate(anim),
+                            child: FadeTransition(opacity: anim, child: child),
+                          ),
+                          child: Icon(
+                            widget.themeFlavor == ThemeFlavor.cyberpunk
+                                ? Icons.eco_rounded
+                                : Icons.hub_rounded,
+                            key: ValueKey(widget.themeFlavor),
+                            color: scheme.primary,
+                          ),
+                        ),
+                      ),
+                    ),
                     IconButton(
                       tooltip: widget.isDarkMode
                           ? 'Switch to light mode'
@@ -541,26 +570,26 @@ class _PortfolioHomeState extends State<PortfolioHome> {
                                     decoration: BoxDecoration(
                                       gradient: LinearGradient(
                                         colors: [
-                                          Palette.cyberPurple.withValues(alpha: 0.15),
-                                          Palette.cyberCyan.withValues(alpha: 0.03),
-                                          Palette.cyberPink.withValues(alpha: 0.15),
+                                          scheme.primary.withValues(alpha: 0.15),
+                                          scheme.secondary.withValues(alpha: 0.03),
+                                          scheme.tertiary.withValues(alpha: 0.15),
                                         ],
                                         begin: Alignment.topLeft,
                                         end: Alignment.bottomRight,
                                       ),
                                       borderRadius: BorderRadius.circular(20),
                                       border: Border.all(
-                                        color: Palette.cyberPurple.withValues(alpha: 0.25),
+                                        color: scheme.primary.withValues(alpha: 0.25),
                                         width: 1,
                                       ),
                                       boxShadow: [
                                         BoxShadow(
-                                          color: Palette.cyberPurple.withValues(alpha: 0.15),
+                                          color: scheme.primary.withValues(alpha: 0.15),
                                           blurRadius: 20,
                                           offset: const Offset(-2, 2),
                                         ),
                                         BoxShadow(
-                                          color: Palette.cyberCyan.withValues(alpha: 0.15),
+                                          color: scheme.secondary.withValues(alpha: 0.15),
                                           blurRadius: 20,
                                           offset: const Offset(2, -2),
                                         ),
@@ -574,8 +603,8 @@ class _PortfolioHomeState extends State<PortfolioHome> {
                                           style: t.headlineSmall?.copyWith(
                                             fontWeight: FontWeight.bold,
                                             foreground: Paint()
-                                              ..shader = const LinearGradient(
-                                                colors: [Palette.cyberPurple, Palette.cyberCyan],
+                                              ..shader = LinearGradient(
+                                                colors: [scheme.primary, scheme.secondary],
                                               ).createShader(
                                                 const Rect.fromLTWH(0, 0, 300, 30),
                                               ),
@@ -591,15 +620,15 @@ class _PortfolioHomeState extends State<PortfolioHome> {
                                         const SizedBox(height: 24),
                                         Container(
                                           decoration: BoxDecoration(
-                                            gradient: const LinearGradient(
-                                              colors: [Palette.cyberPurple, Palette.cyberCyan],
+                                            gradient: LinearGradient(
+                                              colors: [scheme.primary, scheme.secondary],
                                               begin: Alignment.topLeft,
                                               end: Alignment.bottomRight,
                                             ),
                                             borderRadius: BorderRadius.circular(12),
                                             boxShadow: [
                                               BoxShadow(
-                                                color: Palette.cyberPurple.withValues(alpha: 0.3),
+                                                color: scheme.primary.withValues(alpha: 0.3),
                                                 blurRadius: 8,
                                                 offset: const Offset(0, 4),
                                               ),
@@ -656,10 +685,10 @@ class _PortfolioHomeState extends State<PortfolioHome> {
                                   SelectableText(
                                     PortfolioContent.email,
                                     style: t.labelLarge?.copyWith(
-                                      color: isDark ? Palette.cyberCyan : Palette.cyberPurple,
+                                      color: isDark ? scheme.secondary : scheme.primary,
                                       fontWeight: FontWeight.bold,
                                       decoration: TextDecoration.underline,
-                                      decorationColor: (isDark ? Palette.cyberCyan : Palette.cyberPurple)
+                                      decorationColor: (isDark ? scheme.secondary : scheme.primary)
                                           .withValues(alpha: 0.4),
                                     ),
                                   ),
@@ -674,15 +703,15 @@ class _PortfolioHomeState extends State<PortfolioHome> {
                                         message: 'Open your mail app',
                                         child: Container(
                                           decoration: BoxDecoration(
-                                            gradient: const LinearGradient(
-                                              colors: [Palette.cyberPurple, Palette.cyberCyan],
+                                            gradient: LinearGradient(
+                                              colors: [scheme.primary, scheme.secondary],
                                               begin: Alignment.topLeft,
                                               end: Alignment.bottomRight,
                                             ),
                                             borderRadius: BorderRadius.circular(10),
                                             boxShadow: [
                                               BoxShadow(
-                                                color: Palette.cyberPurple.withValues(alpha: 0.25),
+                                                color: scheme.primary.withValues(alpha: 0.25),
                                                 blurRadius: 8,
                                                 offset: const Offset(0, 3),
                                               ),

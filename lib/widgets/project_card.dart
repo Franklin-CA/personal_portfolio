@@ -1,7 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../data/portfolio_content.dart';
-import '../theme/palette.dart';
 
 class ProjectCard extends StatefulWidget {
   const ProjectCard({
@@ -87,9 +86,9 @@ class _ProjectCardState extends State<ProjectCard> with TickerProviderStateMixin
                   borderRadius: BorderRadius.circular(24),
                   gradient: LinearGradient(
                     colors: [
-                      Palette.cyberPurple.withValues(alpha: _glowAnimation.value * 0.5),
-                      Palette.cyberCyan.withValues(alpha: _glowAnimation.value * 0.1),
-                      Palette.cyberPink.withValues(alpha: _glowAnimation.value * 0.5),
+                      scheme.primary.withValues(alpha: _glowAnimation.value * 0.5),
+                      scheme.secondary.withValues(alpha: _glowAnimation.value * 0.1),
+                      scheme.tertiary.withValues(alpha: _glowAnimation.value * 0.5),
                     ],
                     stops: const [0.0, 0.5, 1.0],
                     begin: Alignment.topLeft,
@@ -97,7 +96,7 @@ class _ProjectCardState extends State<ProjectCard> with TickerProviderStateMixin
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Palette.cyberPurple.withValues(
+                      color: scheme.primary.withValues(
                         alpha: _glowAnimation.value * (isDark ? 0.35 : 0.18),
                       ),
                       blurRadius: _isHovered ? 40 : 20,
@@ -105,7 +104,7 @@ class _ProjectCardState extends State<ProjectCard> with TickerProviderStateMixin
                       offset: Offset(_isHovered ? -6 : -2, _isHovered ? 6 : 2),
                     ),
                     BoxShadow(
-                      color: Palette.cyberCyan.withValues(
+                      color: scheme.secondary.withValues(
                         alpha: _glowAnimation.value * (isDark ? 0.35 : 0.18),
                       ),
                       blurRadius: _isHovered ? 40 : 20,
@@ -125,7 +124,7 @@ class _ProjectCardState extends State<ProjectCard> with TickerProviderStateMixin
                           color: scheme.surface.withValues(alpha: isDark ? 0.65 : 0.78),
                           borderRadius: BorderRadius.circular(22.5),
                           border: Border.all(
-                            color: Palette.cyberPurple.withValues(alpha: 0.15),
+                            color: scheme.primary.withValues(alpha: 0.15),
                             width: 1,
                           ),
                         ),
@@ -141,11 +140,11 @@ class _ProjectCardState extends State<ProjectCard> with TickerProviderStateMixin
                                     style: widget.titleStyle.copyWith(
                                       fontWeight: FontWeight.bold,
                                       foreground: Paint()
-                                        ..shader = const LinearGradient(
+                                        ..shader = LinearGradient(
                                           colors: [
-                                            Palette.cyberPurple,
-                                            Palette.cyberCyan,
-                                            Palette.cyberPink,
+                                            scheme.primary,
+                                            scheme.secondary,
+                                            scheme.tertiary,
                                           ],
                                         ).createShader(
                                           const Rect.fromLTWH(0, 0, 240, 40),
@@ -162,15 +161,15 @@ class _ProjectCardState extends State<ProjectCard> with TickerProviderStateMixin
                                       decoration: BoxDecoration(
                                         gradient: LinearGradient(
                                           colors: [
-                                            Palette.cyberPink.withValues(alpha: 0.22),
-                                            Palette.cyberPink.withValues(alpha: 0.05),
+                                            scheme.tertiary.withValues(alpha: 0.22),
+                                            scheme.tertiary.withValues(alpha: 0.05),
                                           ],
                                           begin: Alignment.topLeft,
                                           end: Alignment.bottomRight,
                                         ),
                                         borderRadius: BorderRadius.circular(12),
                                         border: Border.all(
-                                          color: Palette.cyberPink.withValues(alpha: 0.35),
+                                          color: scheme.tertiary.withValues(alpha: 0.35),
                                         ),
                                       ),
                                       child: Text(
@@ -178,7 +177,7 @@ class _ProjectCardState extends State<ProjectCard> with TickerProviderStateMixin
                                         style: widget.mutedStyle.copyWith(
                                           fontSize: 10,
                                           fontWeight: FontWeight.w700,
-                                          color: Palette.cyberPink,
+                                          color: scheme.tertiary,
                                           letterSpacing: 0.4,
                                         ),
                                       ),
@@ -200,15 +199,15 @@ class _ProjectCardState extends State<ProjectCard> with TickerProviderStateMixin
                                       decoration: BoxDecoration(
                                         gradient: LinearGradient(
                                           colors: [
-                                            Palette.cyberCyan.withValues(alpha: 0.15),
-                                            Palette.cyberCyan.withValues(alpha: 0.04),
+                                            scheme.secondary.withValues(alpha: 0.15),
+                                            scheme.secondary.withValues(alpha: 0.04),
                                           ],
                                           begin: Alignment.topLeft,
                                           end: Alignment.bottomRight,
                                         ),
                                         borderRadius: BorderRadius.circular(20),
                                         border: Border.all(
-                                          color: Palette.cyberCyan.withValues(alpha: 0.25),
+                                          color: scheme.secondary.withValues(alpha: 0.25),
                                         ),
                                       ),
                                       child: Text(
@@ -216,7 +215,7 @@ class _ProjectCardState extends State<ProjectCard> with TickerProviderStateMixin
                                         style: widget.mutedStyle.copyWith(
                                           fontSize: 11,
                                           fontWeight: FontWeight.w600,
-                                          color: isDark ? Palette.cyberCyan : Palette.cyberPurple,
+                                          color: isDark ? scheme.secondary : scheme.primary,
                                         ),
                                       ),
                                     );
@@ -241,15 +240,15 @@ class _ProjectCardState extends State<ProjectCard> with TickerProviderStateMixin
                                       message: 'Opens in your browser',
                                       child: Container(
                                         decoration: BoxDecoration(
-                                          gradient: const LinearGradient(
-                                            colors: [Palette.cyberPurple, Palette.cyberCyan],
+                                          gradient: LinearGradient(
+                                            colors: [scheme.primary, scheme.secondary],
                                             begin: Alignment.topLeft,
                                             end: Alignment.bottomRight,
                                           ),
                                           borderRadius: BorderRadius.circular(12),
                                           boxShadow: [
                                             BoxShadow(
-                                              color: Palette.cyberPurple.withValues(alpha: 0.3),
+                                              color: scheme.primary.withValues(alpha: 0.3),
                                               blurRadius: 8,
                                               offset: const Offset(0, 4),
                                             ),
@@ -257,10 +256,10 @@ class _ProjectCardState extends State<ProjectCard> with TickerProviderStateMixin
                                         ),
                                         child: FilledButton.icon(
                                           onPressed: () => widget.onOpen(widget.project.liveUrl!),
-                                          icon: const Icon(Icons.launch_rounded, size: 16),
-                                          label: const Text(
+                                          icon: Icon(Icons.launch_rounded, size: 16, color: scheme.onPrimary),
+                                          label: Text(
                                             'Live site',
-                                            style: TextStyle(fontWeight: FontWeight.bold),
+                                            style: TextStyle(fontWeight: FontWeight.bold, color: scheme.onPrimary),
                                           ),
                                           style: FilledButton.styleFrom(
                                             backgroundColor: Colors.transparent,
@@ -276,15 +275,15 @@ class _ProjectCardState extends State<ProjectCard> with TickerProviderStateMixin
                                       message: 'Download APK',
                                       child: Container(
                                         decoration: BoxDecoration(
-                                          gradient: const LinearGradient(
-                                            colors: [Palette.cyberPink, Palette.cyberPurple],
+                                          gradient: LinearGradient(
+                                            colors: [scheme.tertiary, scheme.primary],
                                             begin: Alignment.topLeft,
                                             end: Alignment.bottomRight,
                                           ),
                                           borderRadius: BorderRadius.circular(12),
                                           boxShadow: [
                                             BoxShadow(
-                                              color: Palette.cyberPink.withValues(alpha: 0.3),
+                                              color: scheme.tertiary.withValues(alpha: 0.3),
                                               blurRadius: 8,
                                               offset: const Offset(0, 4),
                                             ),
@@ -292,10 +291,10 @@ class _ProjectCardState extends State<ProjectCard> with TickerProviderStateMixin
                                         ),
                                         child: FilledButton.icon(
                                           onPressed: () => widget.onOpen(widget.project.apkUrl!),
-                                          icon: const Icon(Icons.download_rounded, size: 16),
-                                          label: const Text(
+                                          icon: Icon(Icons.download_rounded, size: 16, color: scheme.onPrimary),
+                                          label: Text(
                                             'Download APK',
-                                            style: TextStyle(fontWeight: FontWeight.bold),
+                                            style: TextStyle(fontWeight: FontWeight.bold, color: scheme.onPrimary),
                                           ),
                                           style: FilledButton.styleFrom(
                                             backgroundColor: Colors.transparent,

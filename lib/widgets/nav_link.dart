@@ -16,10 +16,13 @@ class NavLink extends StatefulWidget {
 
 class _NavLinkState extends State<NavLink> {
   bool _hover = false;
+  bool _focused = false;
 
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final isHighlighted = _hover || _focused;
+
     return Padding(
       padding: const EdgeInsets.only(right: 4),
       child: MouseRegion(
@@ -28,21 +31,22 @@ class _NavLinkState extends State<NavLink> {
         cursor: SystemMouseCursors.click,
         child: TextButton(
           onPressed: widget.onTap,
+          onFocusChange: (focused) => setState(() => _focused = focused),
           style: TextButton.styleFrom(
             foregroundColor: scheme.onSurface,
             padding:
-                const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-            minimumSize: const Size(44, 44),
+                const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+            minimumSize: const Size(48, 48),
             tapTargetSize: MaterialTapTargetSize.padded,
           ),
           child: AnimatedDefaultTextStyle(
             duration: const Duration(milliseconds: 200),
             style: TextStyle(
               fontSize: 14,
-              fontWeight: _hover ? FontWeight.w700 : FontWeight.w500,
-              color: _hover ? scheme.primary : scheme.onSurface,
+              fontWeight: isHighlighted ? FontWeight.w700 : FontWeight.w500,
+              color: isHighlighted ? scheme.primary : scheme.onSurface,
               decoration:
-                  _hover ? TextDecoration.underline : TextDecoration.none,
+                  isHighlighted ? TextDecoration.underline : TextDecoration.none,
               decorationThickness: 2,
               decorationColor: scheme.primary.withValues(alpha: 0.6),
             ),

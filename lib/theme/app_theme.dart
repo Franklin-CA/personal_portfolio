@@ -2,92 +2,109 @@ import 'package:flutter/material.dart';
 
 import 'palette.dart';
 
+/// The two main aesthetic design flavors of the portfolio.
+enum ThemeFlavor {
+  cyberpunk,
+  jadePebble,
+}
+
 /// Builds the light and dark [ThemeData] for the portfolio.
 class AppTheme {
   AppTheme._();
 
-  static ThemeData light() {
+  static ThemeData light({ThemeFlavor flavor = ThemeFlavor.cyberpunk}) {
+    final isJade = flavor == ThemeFlavor.jadePebble;
+    final bg = isJade ? Palette.jadeLightBg : Palette.lightBg;
+    final surface = isJade ? Palette.jadeLightSurface : Palette.lightSurface;
+    final ink = isJade ? Palette.jadeLightInk : Palette.lightInk;
+    final muted = isJade ? Palette.jadeLightMuted : Palette.lightMuted;
+    final rule = isJade ? Palette.jadeLightRule : Palette.lightRule;
+    final primary = isJade ? Palette.jadePrimary : Palette.cyberPurple;
+    final secondary = isJade ? Palette.jadeSlate : Palette.cyberCyan;
+    final tertiary = isJade ? Palette.jadeSage : Palette.cyberPink;
+    final onPrimary = isJade ? Palette.jadeLightBg : Colors.white;
+
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
-      scaffoldBackgroundColor: Palette.lightBg,
+      scaffoldBackgroundColor: bg,
       colorScheme: ColorScheme.light(
-        surface: Palette.lightSurface,
-        onSurface: Palette.lightInk,
-        primary: Palette.cyberPurple,
-        secondary: Palette.cyberCyan,
-        tertiary: Palette.cyberPink,
-        onPrimary: Colors.white,
-        onSurfaceVariant: Palette.lightMuted,
-        outline: Palette.lightRule,
-        outlineVariant: Palette.lightRule.withValues(alpha: 0.5),
+        surface: surface,
+        onSurface: ink,
+        primary: primary,
+        secondary: secondary,
+        tertiary: tertiary,
+        onPrimary: onPrimary,
+        onSurfaceVariant: muted,
+        outline: rule,
+        outlineVariant: rule.withValues(alpha: 0.5),
       ),
-      appBarTheme: const AppBarTheme(
+      appBarTheme: AppBarTheme(
         elevation: 0,
         scrolledUnderElevation: 0,
         backgroundColor: Colors.transparent,
-        foregroundColor: Palette.lightInk,
+        foregroundColor: ink,
         surfaceTintColor: Colors.transparent,
         titleTextStyle: TextStyle(
           fontSize: 15,
           fontWeight: FontWeight.w600,
-          color: Palette.lightInk,
+          color: ink,
           letterSpacing: 0.15,
         ),
       ),
-      dividerTheme: const DividerThemeData(
-        color: Palette.lightRule,
+      dividerTheme: DividerThemeData(
+        color: rule,
         thickness: 1,
         space: 1,
       ),
-      textTheme: const TextTheme(
+      textTheme: TextTheme(
         headlineLarge: TextStyle(
           fontSize: 44,
           fontWeight: FontWeight.w700,
           height: 1.1,
           letterSpacing: -1.2,
-          color: Palette.lightInk,
+          color: ink,
         ),
         headlineMedium: TextStyle(
           fontSize: 34,
           fontWeight: FontWeight.w600,
           height: 1.15,
           letterSpacing: -0.6,
-          color: Palette.lightInk,
+          color: ink,
         ),
         titleLarge: TextStyle(
           fontSize: 22,
           fontWeight: FontWeight.w700,
           height: 1.3,
           letterSpacing: -0.3,
-          color: Palette.lightInk,
+          color: ink,
         ),
         titleMedium: TextStyle(
           fontSize: 17,
           fontWeight: FontWeight.w600,
           height: 1.35,
           letterSpacing: -0.15,
-          color: Palette.lightInk,
+          color: ink,
         ),
         bodyLarge: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w400,
           height: 1.6,
           letterSpacing: 0.01,
-          color: Palette.lightMuted,
+          color: muted,
         ),
         bodyMedium: TextStyle(
           fontSize: 15,
           fontWeight: FontWeight.w400,
           height: 1.55,
           letterSpacing: 0.01,
-          color: Palette.lightMuted,
+          color: muted,
         ),
         labelLarge: TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w600,
           letterSpacing: 0.02,
-          color: Palette.lightInk,
+          color: ink,
         ),
       ),
       filledButtonTheme: FilledButtonThemeData(
@@ -114,88 +131,99 @@ class AppTheme {
     );
   }
 
-  static ThemeData dark() {
+  static ThemeData dark({ThemeFlavor flavor = ThemeFlavor.cyberpunk}) {
+    final isJade = flavor == ThemeFlavor.jadePebble;
+    final bg = isJade ? Palette.jadeDarkBg : Palette.darkBg;
+    final surface = isJade ? Palette.jadeDarkSurface : Palette.darkSurface;
+    final ink = isJade ? Palette.jadeDarkInk : Palette.darkInk;
+    final muted = isJade ? Palette.jadeDarkMuted : Palette.darkMuted;
+    final rule = isJade ? Palette.jadeDarkRule : Palette.darkRule;
+    final primary = isJade ? Palette.jadePrimary : Palette.cyberPurple;
+    final secondary = isJade ? Palette.jadeSlate : Palette.cyberCyan;
+    final tertiary = isJade ? Palette.jadeSage : Palette.cyberPink;
+    final onPrimary = isJade ? Palette.jadeDarkBg : Palette.darkBg;
+
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
-      scaffoldBackgroundColor: Palette.darkBg,
+      scaffoldBackgroundColor: bg,
       colorScheme: ColorScheme.dark(
-        surface: Palette.darkSurface,
-        onSurface: Palette.darkInk,
-        primary: Palette.cyberPurple,
-        secondary: Palette.cyberCyan,
-        tertiary: Palette.cyberPink,
-        onPrimary: Palette.darkBg,
-        onSurfaceVariant: Palette.darkMuted,
-        outline: Palette.darkRule,
-        outlineVariant: Palette.darkRule.withValues(alpha: 0.5),
+        surface: surface,
+        onSurface: ink,
+        primary: primary,
+        secondary: secondary,
+        tertiary: tertiary,
+        onPrimary: onPrimary,
+        onSurfaceVariant: muted,
+        outline: rule,
+        outlineVariant: rule.withValues(alpha: 0.5),
       ),
-      appBarTheme: const AppBarTheme(
+      appBarTheme: AppBarTheme(
         elevation: 0,
         scrolledUnderElevation: 0,
         backgroundColor: Colors.transparent,
-        foregroundColor: Palette.darkInk,
+        foregroundColor: ink,
         surfaceTintColor: Colors.transparent,
         titleTextStyle: TextStyle(
           fontSize: 15,
           fontWeight: FontWeight.w600,
-          color: Palette.darkInk,
+          color: ink,
           letterSpacing: 0.15,
         ),
       ),
-      dividerTheme: const DividerThemeData(
-        color: Palette.darkRule,
+      dividerTheme: DividerThemeData(
+        color: rule,
         thickness: 1,
         space: 1,
       ),
-      textTheme: const TextTheme(
+      textTheme: TextTheme(
         headlineLarge: TextStyle(
           fontSize: 44,
           fontWeight: FontWeight.w700,
           height: 1.1,
           letterSpacing: -1.2,
-          color: Palette.darkInk,
+          color: ink,
         ),
         headlineMedium: TextStyle(
           fontSize: 34,
           fontWeight: FontWeight.w600,
           height: 1.15,
           letterSpacing: -0.6,
-          color: Palette.darkInk,
+          color: ink,
         ),
         titleLarge: TextStyle(
           fontSize: 22,
           fontWeight: FontWeight.w700,
           height: 1.3,
           letterSpacing: -0.3,
-          color: Palette.darkInk,
+          color: ink,
         ),
         titleMedium: TextStyle(
           fontSize: 17,
           fontWeight: FontWeight.w600,
           height: 1.35,
           letterSpacing: -0.15,
-          color: Palette.darkInk,
+          color: ink,
         ),
         bodyLarge: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w400,
           height: 1.6,
           letterSpacing: 0.01,
-          color: Palette.darkMuted,
+          color: muted,
         ),
         bodyMedium: TextStyle(
           fontSize: 15,
           fontWeight: FontWeight.w400,
           height: 1.55,
           letterSpacing: 0.01,
-          color: Palette.darkMuted,
+          color: muted,
         ),
         labelLarge: TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w600,
           letterSpacing: 0.02,
-          color: Palette.darkInk,
+          color: ink,
         ),
       ),
       filledButtonTheme: FilledButtonThemeData(

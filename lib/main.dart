@@ -16,6 +16,7 @@ class PortfolioApp extends StatefulWidget {
 
 class _PortfolioAppState extends State<PortfolioApp> {
   ThemeMode _themeMode = ThemeMode.system;
+  ThemeFlavor _themeFlavor = ThemeFlavor.cyberpunk;
 
   void _toggleTheme() {
     setState(() {
@@ -34,6 +35,14 @@ class _PortfolioAppState extends State<PortfolioApp> {
     });
   }
 
+  void _toggleThemeFlavor() {
+    setState(() {
+      _themeFlavor = _themeFlavor == ThemeFlavor.cyberpunk
+          ? ThemeFlavor.jadePebble
+          : ThemeFlavor.cyberpunk;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final isSystemDark =
@@ -46,10 +55,15 @@ class _PortfolioAppState extends State<PortfolioApp> {
     return MaterialApp(
       title: '${PortfolioContent.name} · ${PortfolioContent.headline}',
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.light(),
-      darkTheme: AppTheme.dark(),
+      theme: AppTheme.light(flavor: _themeFlavor),
+      darkTheme: AppTheme.dark(flavor: _themeFlavor),
       themeMode: _themeMode,
-      home: PortfolioHome(isDarkMode: isDark, onToggleTheme: _toggleTheme),
+      home: PortfolioHome(
+        isDarkMode: isDark,
+        onToggleTheme: _toggleTheme,
+        themeFlavor: _themeFlavor,
+        onToggleThemeFlavor: _toggleThemeFlavor,
+      ),
     );
   }
 }
